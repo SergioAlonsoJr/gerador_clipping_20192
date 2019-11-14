@@ -1,0 +1,31 @@
+
+<form action="{% url 'gerador:new_project'  %}" method="post">
+{% csrf_token %}
+<!-- Botão para iniciar novos projetos-->
+<input type="submit" value="Novo">
+</form>
+
+<table>
+    <tr>
+        <th>Nome</th>
+        <th>Data</th>
+        <th>Ações</th>
+    </tr>
+{% for project in project_list %}
+{% if project.is_archived == False%}
+    <tr>
+        <td><a href="{% url 'gerador:news_recovery' project.id %}">{{project.name}}</a></td>
+        <td>{{project.created_date}} </td>
+        <td>
+        
+            <form action="{% url 'gerador:archive_project' project.id  %}" method="post">
+                {% csrf_token %}
+                <!-- Botão para arquivar projetos-->
+                <input type="submit" value="Arquivar">
+            </form>
+
+        </td>
+    </tr>
+    {% endif %}
+{% endfor %}
+</table>

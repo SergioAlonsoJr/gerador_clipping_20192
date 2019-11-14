@@ -1,0 +1,73 @@
+<h2>Recupere notícias e as inclua no Clipping</h2>
+
+<form action="{% url 'gerador:news_recovery' project.id%}">
+<!--
+    <b>Doenças:</b>
+    <input type="checkbox" name="disease" value="aids" id="aids" checked>
+    <label for="aids">aids</label>
+
+    <input type="checkbox" name="disease" value="dengue" id="dengue" checked>
+    <label for="dengue">dengue</label>
+
+    <input type="checkbox" name="disease" value="ebola" id="ebola" checked>
+    <label for="ebola">ebola</label>
+
+    <input type="checkbox" name="disease" value="sarampo" id="sarampo" checked>
+    <label for="sarampo">sarampo</label>
+
+    <input type="checkbox" name="disease" value="cancer" id="cancer" checked>
+    <label for="cancer">câncer</label>
+
+    <input type="text" name="extra_disease">
+-->
+    
+    <!--
+        <br>
+        <b>Lugar:</b>
+    -->
+    
+    <br>
+    <b>Idade:</b>
+    <input type="radio" name="age" value="24h" id="24h" checked/>
+    <label for="24h">24h</label>
+
+    <input type="radio" name="age" value="2d" id="2d"/>
+    <label for="2d">2 dias</label>
+
+    <input type="radio" name="age" value="1s" id="1s"/>
+    <label for="1s">1 semana</label>
+
+    <input type="radio" name="age" value="1m" id="1m"/>
+    <label for="1m">1 mês</label>
+
+    <input type="radio" name="age" value="any" id="any"/>
+    <label for="any">1 mês</label>
+
+    <br>
+    <b>Ordernar:</b>
+    
+    <input type="radio" name="sort" value="score" id="score" checked/>
+    <label for="score">relevância</label>
+    
+    <input type="radio" name="sort" value="date" id="date"/>
+    <label for="date">data</label>
+    
+    <br>
+    <input type="submit" value="Buscar"/>
+
+    
+
+</form>
+
+<br>
+
+{% if news_result == null%}
+    Sem Notícias
+{% else %}
+
+
+    {% for key, value in news_result %}
+        <p>{{ key }} {{ value }}</p>
+    {% endfor%}
+
+{% endif %}
