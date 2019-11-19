@@ -1,10 +1,8 @@
-
 <form action="{% url 'gerador:new_project'  %}" method="post">
 {% csrf_token %}
 <!-- Botão para iniciar novos projetos-->
 <input type="submit" value="Novo">
 </form>
-
 <table>
     <tr>
         <th>Nome</th>
@@ -17,9 +15,9 @@
         <td><a href="{% url 'gerador:news_recovery' project.id %}">{{project.name}}</a></td>
         <td>{{project.created_date}} </td>
         <td>
-        
-            <form action="{% url 'gerador:archive_project' project.id  %}" method="post">
+            <form action="{% url 'gerador:archive_project' project.id %}" method="post">
                 {% csrf_token %}
+               
                 <!-- Botão para arquivar projetos-->
                 <input type="submit" value="Arquivar">
             </form>

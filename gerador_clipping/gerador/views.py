@@ -8,7 +8,7 @@ from django.shortcuts import get_object_or_404, render
 from django.utils import timezone
 from django.urls import reverse
 from django.views import generic
-from .models import ClippingProject
+from .models import ClippingProject, News
 
 
 class ExplorerView(generic.ListView):
@@ -40,24 +40,55 @@ def archive_project(request, project_id):
     return HttpResponseRedirect(reverse('gerador:explorer'))
 
 
-def news_recovery(request, project_id, *args):
+def news_recovery(request, project_id, page=1, *args):
     """" Permite recuperar as notícias do banco de dados com parâmetros. """
     project = get_object_or_404(ClippingProject, pk=project_id)
 
-    url = 'http://127.0.0.1:8080/noticias'
-    payload = {}
-    headers = {'content-type': 'application/json'}
+    # api-endpoint
+    url = "http://127.0.0.1:8080/noticias"
 
-    response = requests.get(url, data=json.dumps(payload), headers=headers)
+    # defining a params dict for the parameters to be sent to the API
+    params = {'page': 1, 'items': 100}
+
+    # sending get request and saving the response as response object
+    r = requests.get(url=url, params=params)
+
+    # extracting data in json format
+    data = r.json()
+
+    links = data['links']
+    data = data['data']
+
+    # remover [+N chars]
+    for news in data:
+        content = news['content']
+        if content.find('[+'):
+            content = content.split('[+')[0]
+            news['content'] = content
 
     return render(request, 'gerador/news_recovery.html',
-                  {'project': project, 'news_result': response.json})
+                  {'project': project, 'news_result': data, 'links': links})
 
-# def get_news(request,project_id, *args):
-#     r = requests.get('http://127.0.0.1:8080/noticias')
-#     project = get_object_or_404(ClippingProject, pk=project_id)
-#     return render(request, 'gerador/news_recovery.html', {'project': project})
-#     """ Retorna do banco de dados as notícias com os parâmetros."""
+
+def insert_news(request, project_id):
+    """" Insere notícia no projeto. """
+    news_data = request.POST.get('news_data')
+    
+    print(news_data)
+    news_data = json.loads(news_data)
+    project = ClippingProject.objects.get(id=project_id)
+    print(type(news_data))
+    title = news_data['title']
+    content = news_data['content']
+    url = news_data['url']
+    pub_date = news_data['publishedAt']
+    author = news_data['author']
+    url_to_image = news_data['urlToImage']
+    source_db_id = news_data['id']
+    news = News(title=title, content=content, url=url, pub_date=pub_date,
+                author=author, url_to_image=url_to_image, source_db_id=source_db_id)
+    news.save()
+    return HttpResponseRedirect(reverse('gerador:news_recovery'))
 
 
 def clipping_organizer(request, project_id):

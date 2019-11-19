@@ -26,6 +26,7 @@
         <b>Lugar:</b>
     -->
     
+    <!--
     <br>
     <b>Idade:</b>
     <input type="radio" name="age" value="24h" id="24h" checked/>
@@ -53,21 +54,42 @@
     <label for="date">data</label>
     
     <br>
+    
     <input type="submit" value="Buscar"/>
-
+-->
     
 
 </form>
 
 <br>
 
-{% if news_result == null%}
-    Sem Notícias
-{% else %}
 
+<table>
 
-    {% for key, value in news_result %}
-        <p>{{ key }} {{ value }}</p>
-    {% endfor%}
+{% for news in news_result  %}
+    <tr>
+        <td>
+      
+            <form action="{% url 'gerador:insert_news' project.id%" method="post">
+                 {% csrf_token %}
+                  <input type="hidden" name="news_data" value="{{ news }}" />
+                <input type="submit" value="Incluir"/>
+            </form>
+        </td>
+        <td>
+            <img src="{{ news.urlToImage}}" height="140">
+        </td>
+        <td>
+            <strong> {{news.title}} </strong>
+                {{news.publishedAt}} <br>{{news.author}}
+        </td>
+        
+        <td>
+            <p> {{news.content}} <a href="{{news.url}}" target="_blank">Ver mais</a></p>
+        </td>
+        
+        </tr>
+{% endfor%}
+</table>
 
-{% endif %}
+</form>

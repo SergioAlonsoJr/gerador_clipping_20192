@@ -8,6 +8,8 @@ urlpatterns = [
     path('new_project/', views.new_project, name='new_project'),
     path('<int:project_id>/archive/',
          views.archive_project, name='archive_project'),
+     path('<int:project_id>/insert_news/',
+         views.insert_news, name='insert_news'),
     path('<int:project_id>/recovery/', views.news_recovery, name='news_recovery'),
     path('<int:project_id>/organizer/', views.clipping_organizer, name='organizer'),
 ]

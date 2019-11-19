@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import ClippingProject, Content, New
+from .models import ClippingProject, Content, News
 
 admin.site.register(ClippingProject)
-admin.site.register(New)
+admin.site.register(News)
