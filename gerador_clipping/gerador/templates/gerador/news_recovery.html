@@ -1,4 +1,4 @@
-<h2>Recupere notícias e as inclua no Clipping</h2>
+<h2>Recupere notícias e as inclua no Clipping {{project.name}}</h2>
 
 <form action="{% url 'gerador:news_recovery' project.id%}">
 <!--
@@ -69,12 +69,30 @@
 {% for news in news_result  %}
     <tr>
         <td>
-      
-            <form action="{% url 'gerador:insert_news' project.id%" method="post">
+            {{news.is_included}}
+            {% if news.is_included == False %}
+            <form action="{% url 'gerador:insert_news' project.id%}" method="post">
                  {% csrf_token %}
-                  <input type="hidden" name="news_data" value="{{ news }}" />
-                <input type="submit" value="Incluir"/>
+                  <input type="hidden" name="title" value="{{ news.title }}" />
+                  <input type="hidden" name="content" value="{{ news.content }}" />
+                  <input type="hidden" name="author" value="{{ news.author }}" />
+                  <input type="hidden" name="url" value="{{ news.url }}" />
+                  <input type="hidden" name="publishedAt" value="{{ news.publishedAt }}" />
+                  <input type="hidden" name="urlToImage" value="{{ news.urlToImage }}" />
+                  <input type="hidden" name="source_db_id" value="{{ news.id }}" />
+                  
+                  
+                  <input type="submit" value="Incluir"/>
             </form>
+            {% else %}
+             <form action="{% url 'gerador:remove_news' project.id%}" method="post">
+                 {% csrf_token %}
+                 
+                  <input type="hidden" name="source_db_id" value="{{ news.id }}" />
+                  <input type="submit" value="Remover"/>
+            </form>
+
+            {% endif %}
         </td>
         <td>
             <img src="{{ news.urlToImage}}" height="140">

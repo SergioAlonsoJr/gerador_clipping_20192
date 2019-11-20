@@ -1,5 +1,4 @@
 """" As views gerenciam o que ocorre quando o usuário entra em uma URL do app"""
-import json
 import requests
 
 from django.http import HttpResponse, HttpResponseRedirect
@@ -8,7 +7,7 @@ from django.shortcuts import get_object_or_404, render
 from django.utils import timezone
 from django.urls import reverse
 from django.views import generic
-from .models import ClippingProject, News
+from .models import ClippingProject
 
 
 class ExplorerView(generic.ListView):
@@ -40,7 +39,7 @@ def archive_project(request, project_id):
     return HttpResponseRedirect(reverse('gerador:explorer'))
 
 
-def news_recovery(request, project_id, page=1, *args):
+def news_recovery(request, project_id):
     """" Permite recuperar as notícias do banco de dados com parâmetros. """
     project = get_object_or_404(ClippingProject, pk=project_id)
 
@@ -51,13 +50,16 @@ def news_recovery(request, project_id, page=1, *args):
     params = {'page': 1, 'items': 100}
 
     # sending get request and saving the response as response object
-    r = requests.get(url=url, params=params)
+    api_request = requests.get(url=url, params=params)
 
     # extracting data in json format
-    data = r.json()
+    data = api_request.json()
 
-    links = data['links']
+    #links = data['links']
     data = data['data']
+    for data_row in data:
+        data_row['is_included'] = project.news_set.filter(
+            source_db_id=data_row['id']).count() > 0
 
     # remover [+N chars]
     for news in data:
@@ -67,28 +69,47 @@ def news_recovery(request, project_id, page=1, *args):
             news['content'] = content
 
     return render(request, 'gerador/news_recovery.html',
-                  {'project': project, 'news_result': data, 'links': links})
+                  {'project': project, 'news_result': data, })
 
 
 def insert_news(request, project_id):
     """" Insere notícia no projeto. """
-    news_data = request.POST.get('news_data')
-    
-    print(news_data)
-    news_data = json.loads(news_data)
+
     project = ClippingProject.objects.get(id=project_id)
-    print(type(news_data))
-    title = news_data['title']
-    content = news_data['content']
-    url = news_data['url']
-    pub_date = news_data['publishedAt']
-    author = news_data['author']
-    url_to_image = news_data['urlToImage']
-    source_db_id = news_data['id']
-    news = News(title=title, content=content, url=url, pub_date=pub_date,
-                author=author, url_to_image=url_to_image, source_db_id=source_db_id)
-    news.save()
-    return HttpResponseRedirect(reverse('gerador:news_recovery'))
+
+    title = request.POST.get('title')
+    content = request.POST.get('content')
+    author = request.POST.get('author')
+    url = request.POST.get('url')
+    pub_date = request.POST.get('publishedAt')
+    url_to_image = request.POST.get('urlToImage')
+    source_db_id = request.POST.get('source_db_id')
+
+    project.news_set.create(title=title,
+                            content=content,
+                            url=url,
+                            pub_date=pub_date,
+                            author=author,
+                            url_to_image=url_to_image,
+                            source_db_id=source_db_id)
+
+    project.save()
+    return HttpResponseRedirect(reverse('gerador:news_recovery', args=[project_id]))
+
+
+def remove_news(request, project_id):
+    """" Insere notícia no projeto. """
+
+    project = ClippingProject.objects.get(id=project_id)
+
+    source_db_id = request.POST.get('source_db_id')
+
+    news_to_remove = project.news_set.filter(
+        source_db_id=source_db_id)
+
+    for news in news_to_remove:
+        news.delete()
+    return HttpResponseRedirect(reverse('gerador:news_recovery', args=[project_id]))
 
 
 def clipping_organizer(request, project_id):
