@@ -18,6 +18,7 @@ class ClippingProject(models.Model):
 class News(models.Model):
     """" News é uma notícia do clipping. """
     project = models.ForeignKey(ClippingProject, on_delete=models.CASCADE)
+    order = models.PositiveSmallIntegerField(default=0)
     title = models.CharField(max_length=200)
     content = models.CharField(max_length=500)
     url = models.CharField(max_length=300)
@@ -25,6 +26,10 @@ class News(models.Model):
     author = models.CharField(max_length=100, default='0')
     url_to_image = models.CharField(max_length=100, default='0')
     source_db_id = models.CharField(max_length=300, default='0')
+    header = models.CharField(max_length=50, default="")
 
     def __str__(self):
         return self.title
+
+    class Meta:
+        ordering = ["order"]

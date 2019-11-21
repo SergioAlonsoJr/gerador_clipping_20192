@@ -1,12 +1,14 @@
 """" As views gerenciam o que ocorre quando o usuário entra em uma URL do app"""
 import requests
 
-from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import get_object_or_404, render
+from django.http import HttpResponseRedirect, HttpResponse
+from django.shortcuts import get_object_or_404, render, redirect
+from django.core import serializers
 
 from django.utils import timezone
 from django.urls import reverse
 from django.views import generic
+
 from .models import ClippingProject
 
 
@@ -55,7 +57,7 @@ def news_recovery(request, project_id):
     # extracting data in json format
     data = api_request.json()
 
-    #links = data['links']
+    # links = data['links']
     data = data['data']
     for data_row in data:
         data_row['is_included'] = project.news_set.filter(
@@ -84,6 +86,7 @@ def insert_news(request, project_id):
     pub_date = request.POST.get('publishedAt')
     url_to_image = request.POST.get('urlToImage')
     source_db_id = request.POST.get('source_db_id')
+    order = project.news_set.all().count()
 
     project.news_set.create(title=title,
                             content=content,
@@ -91,7 +94,8 @@ def insert_news(request, project_id):
                             pub_date=pub_date,
                             author=author,
                             url_to_image=url_to_image,
-                            source_db_id=source_db_id)
+                            source_db_id=source_db_id,
+                            order=order)
 
     project.save()
     return HttpResponseRedirect(reverse('gerador:news_recovery', args=[project_id]))
@@ -100,7 +104,7 @@ def insert_news(request, project_id):
 def remove_news(request, project_id):
     """" Insere notícia no projeto. """
 
-    project = ClippingProject.objects.get(id=project_id)
+    project = get_object_or_404(ClippingProject, pk=project_id)
 
     source_db_id = request.POST.get('source_db_id')
 
@@ -108,11 +112,69 @@ def remove_news(request, project_id):
         source_db_id=source_db_id)
 
     for news in news_to_remove:
+        order_of_deleted_news = news.order
         news.delete()
-    return HttpResponseRedirect(reverse('gerador:news_recovery', args=[project_id]))
+        news_to_reorder = project.news_set.filter(
+            order__gt=order_of_deleted_news)
+        for other_news in news_to_reorder:
+            other_news.order -= 1
+            other_news.save()
+
+    return redirect(request.META.get('HTTP_REFERER'))
 
 
 def clipping_organizer(request, project_id):
     """" Permite ordernar as notícias e inserir cabeçalhos. """
-    response = "Este é o organizador do projeto %s."
-    return HttpResponse(response % project_id)
+    project = get_object_or_404(ClippingProject, pk=project_id)
+    news_set = project.news_set.all()
+
+    return render(request, 'gerador/clipping_organizer.html',
+                  {'project': project, 'news_set': news_set})
+
+
+def news_order_up(request, project_id):
+    """ Move uma notícia específica para cima. """
+    project = get_object_or_404(ClippingProject, pk=project_id)
+    order = request.POST.get('order')
+
+    news_to_up = project.news_set.get(
+        order=order)
+
+    order = news_to_up.order
+
+    if news_to_up.order > 0:
+        news_above = project.news_set.get(order=order-1)
+        news_to_up.order = order-1
+        news_above.order = order
+        news_above.save()
+        news_to_up.save()
+
+    return redirect(request.META.get('HTTP_REFERER'))
+
+
+def update_header(request, project_id):
+    """ Move uma notícia específica para cima. """
+    project = get_object_or_404(ClippingProject, pk=project_id)
+    order = request.POST.get('order')
+    header = request.POST.get('header')
+
+    news_to_update = project.news_set.get(
+        order=order)
+
+    news_to_update.header = header
+    news_to_update.save()
+
+    return redirect(request.META.get('HTTP_REFERER'))
+
+
+def download_pdf(request, project_id):
+    """ Faz download do clipping como pdf. """
+    project = get_object_or_404(ClippingProject, pk=project_id)
+    json_str = serializers.serialize("json", project.news_set.all(),
+                                     fields=('title', 'content', 'url', 'pub_date',
+                                             'author', 'url_to_image', 'header'))
+    file_name = 'clipping_' + project.name
+    response = HttpResponse(json_str, content_type='application/json')
+    response['Content-Disposition'] = 'attachment; filename=' + \
+        file_name + '.json'
+    return response

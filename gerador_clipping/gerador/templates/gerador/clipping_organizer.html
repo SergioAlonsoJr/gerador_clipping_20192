@@ -1,0 +1,49 @@
+<h1>Ordene as notícias e insira cabeçalhos</h1>
+
+<hr>
+<a href="{% url 'gerador:news_recovery' project.id %}">Recuperar mais notícias</a>
+<br>
+<a href="{% url 'gerador:download_pdf' project.id %}">Gerar Clipping PDF</a>
+
+<table>
+
+{% for news in news_set  %}
+    <tr>
+        <td>
+            {{news.order}}
+        </td>
+        <td>
+            <img src="{{ news.url_to_image}}" height="100">
+        </td>
+        <td>
+            <form action="{% url 'gerador:update_header' project.id%}" method="post">
+                {% csrf_token %}
+                <label for="header">Cabeçalho:</label>
+                <input type="text" name="header" id="header" value="{{ news.header }}" />
+                <input type="hidden" name="order" value="{{ news.order }}" />
+                <input type="submit" value="Atualizar"/>
+            </form>
+            <strong> {{news.title}} </strong>
+        </td>
+        <td>
+            
+            <br>
+            <form action="{% url 'gerador:remove_news' project.id%}" method="post">
+                 {% csrf_token %}
+                 
+                  <input type="hidden" name="source_db_id" value="{{ news.source_db_id }}" />
+                  <input type="submit" value="Remover"/>
+            </form>
+
+            {% if news.order > 0%}
+            <form action="{% url 'gerador:news_order_up' project.id%}" method="post">
+                 {% csrf_token %}
+                 
+                  <input type="hidden" name="order" value="{{ news.order }}" />
+                  <input type="submit" value="Subir"/>
+            </form>
+            {% endif %}
+        </td>
+        </tr>
+{% endfor%}
+</table>
