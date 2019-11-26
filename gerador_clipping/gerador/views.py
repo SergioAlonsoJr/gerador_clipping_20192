@@ -112,7 +112,7 @@ def news_recovery(request, project_id):
         date_time_obj = datetime.datetime.strptime(
             date_time_str, '%Y-%m-%dT%H:%M:%SZ')
 
-        news['publishedAt'] = date_time_obj
+        news['publishedAt_human'] = date_time_obj
 
     return render(request, 'gerador/news_recovery.html',
                   {'project': project, 'news_result': data, })
