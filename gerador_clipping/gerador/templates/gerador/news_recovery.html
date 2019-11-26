@@ -1,3 +1,5 @@
+{% load humanize %}
+
 <h2>Recupere notícias e as inclua no Clipping {{project.name}}</h2>
 
 <form action="{% url 'gerador:news_recovery' project.id%}">
@@ -102,7 +104,7 @@
         </td>
         <td>
             <strong> {{news.title}} </strong>
-                {{news.publishedAt_human|date:"D d M Y"}} <br>{{news.author}}
+                {{news.publishedAt_human|naturalday:"D d M Y"}} <br>{{news.author}}
         </td>
         
         <td>

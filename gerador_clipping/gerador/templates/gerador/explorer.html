@@ -1,4 +1,5 @@
 {% load static %}
+{% load humanize %}
 
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -85,13 +86,17 @@
                         {% for project in project_list %}
                         {% if project.is_archived == False%}
                             <tr>
-                                <td><a href="{% url 'gerador:news_recovery' project.id %}"><u>{{project.name}}</u></a></td>
-                                <td>{{project.created_date|date:"SHORT_DATE_FORMAT" }} {{ project.created_date|time:"H:i" }}</td>
                                 <td>
-                                <a href="{% url 'gerador:duplicate_project' project.id%}"> <i class="fa fa-copy"></i></a>
-                                <a href="{% url 'gerador:download_pdf' project.id%}"> <i class="fa fa-cloud-download"></i></a>
-                                <a href="{% url 'gerador:show_rename_project' project.id%}"> <i class="fa fa-edit"></i></a>
-                                <a href="{% url 'gerador:show_archive_project' project.id%}"> <i class="fa fa-trash-o"></i></a>
+                                  <a href="{% url 'gerador:news_recovery' project.id %}"><u>{{project.name}}</u></a>
+                                </td>
+                                <td>
+                                  {{project.created_date|naturalday:"SHORT_DATE_FORMAT" }} {{ project.created_date|time:"H:i" }}
+                                </td>
+                                <td>
+                                  <a href="{% url 'gerador:duplicate_project' project.id%}"> <i class="fa fa-copy"></i></a>
+                                  <a href="{% url 'gerador:download_pdf' project.id%}"> <i class="fa fa-cloud-download"></i></a>
+                                  <a href="{% url 'gerador:show_rename_project' project.id%}"> <i class="fa fa-edit"></i></a>
+                                  <a href="{% url 'gerador:show_archive_project' project.id%}"> <i class="fa fa-trash-o"></i></a>
                                 </td>
                             </tr>
                             {% endif %}
