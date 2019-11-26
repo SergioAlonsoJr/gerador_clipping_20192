@@ -91,7 +91,7 @@
                                 <a href="{% url 'gerador:duplicate_project' project.id%}"> <i class="fa fa-copy"></i></a>
                                 <a href="{% url 'gerador:download_pdf' project.id%}"> <i class="fa fa-cloud-download"></i></a>
                                 <a href="{% url 'gerador:show_rename_project' project.id%}"> <i class="fa fa-edit"></i></a>
-                                <a href="{% url 'gerador:archive_project' project.id%}"> <i class="fa fa-trash-o"></i></a>
+                                <a href="{% url 'gerador:show_archive_project' project.id%}"> <i class="fa fa-trash-o"></i></a>
                                 </td>
                             </tr>
                             {% endif %}

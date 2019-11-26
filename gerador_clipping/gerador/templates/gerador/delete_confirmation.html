@@ -1,0 +1,12 @@
+<h3>Tem certeza?</h3>
+<p>Você não poderá recuperar este projeto!</p>
+
+<form action="{% url 'gerador:explorer'  %}" method="get">
+    {% csrf_token %}
+    <input type="submit" value="Cancelar">
+</form>
+
+<form action="{% url 'gerador:archive_project' project.id %}" method="post">
+    {% csrf_token %}
+    <input type="submit" value="Sim, delete!">
+</form>

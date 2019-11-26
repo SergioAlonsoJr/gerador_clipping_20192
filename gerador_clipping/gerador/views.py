@@ -60,6 +60,14 @@ def rename_project(request, project_id):
     return HttpResponseRedirect(reverse('gerador:explorer'))
 
 
+def show_archive_project(request, project_id):
+    """" Tela para confirmar arquivamento do projeto. """
+    project = ClippingProject.objects.get(id=project_id)
+
+    return render(request, 'gerador/delete_confirmation.html',
+                  {'project': project, })
+
+
 def archive_project(request, project_id):
     """" Arquiva projeto. """
     project = ClippingProject.objects.get(id=project_id)

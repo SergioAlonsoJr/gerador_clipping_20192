@@ -12,6 +12,8 @@ urlpatterns = [
     path('new_project/', views.new_project, name='new_project'),
     path('<int:project_id>/archive/',
          views.archive_project, name='archive_project'),
+    path('<int:project_id>/show_archive/',
+         views.show_archive_project, name='show_archive_project'),
     path('<int:project_id>/duplicate/',
          views.duplicate_project, name='duplicate_project'),
     path('<int:project_id>/insert_news/',
