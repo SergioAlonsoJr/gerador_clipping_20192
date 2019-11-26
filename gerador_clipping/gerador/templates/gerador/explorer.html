@@ -86,7 +86,7 @@
                         {% if project.is_archived == False%}
                             <tr>
                                 <td><a href="{% url 'gerador:news_recovery' project.id %}"><u>{{project.name}}</u></a></td>
-                                <td>{{project.created_date}} </td>
+                                <td>{{project.created_date|date:"SHORT_DATE_FORMAT" }} {{ project.created_date|time:"H:i" }}</td>
                                 <td>
                                 <a href="{% url 'gerador:duplicate_project' project.id%}"> <i class="fa fa-copy"></i></a>
                                 <a href="{% url 'gerador:download_pdf' project.id%}"> <i class="fa fa-cloud-download"></i></a>

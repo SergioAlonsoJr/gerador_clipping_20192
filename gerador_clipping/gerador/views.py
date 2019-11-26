@@ -1,4 +1,5 @@
 """" As views gerenciam o que ocorre quando o usuário entra em uma URL do app"""
+import datetime
 import requests
 
 from django.http import HttpResponseRedirect, HttpResponse
@@ -98,12 +99,20 @@ def news_recovery(request, project_id):
         data_row['is_included'] = project.news_set.filter(
             source_db_id=data_row['id']).count() > 0
 
-    # remover [+N chars]
     for news in data:
+         # remover [+N chars]
         content = news['content']
         if content.find('[+'):
             content = content.split('[+')[0]
             news['content'] = content
+
+        # formatar tempo para humanos e para django
+        date_time_str = news['publishedAt']
+
+        date_time_obj = datetime.datetime.strptime(
+            date_time_str, '%Y-%m-%dT%H:%M:%SZ')
+
+        news['publishedAt'] = date_time_obj
 
     return render(request, 'gerador/news_recovery.html',
                   {'project': project, 'news_result': data, })
