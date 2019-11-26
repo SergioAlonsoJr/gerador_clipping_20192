@@ -72,7 +72,7 @@
 {% for news in news_result  %}
     <tr>
         <td>
-            {{news.is_included}}
+           
             {% if news.is_included == False %}
             <form action="{% url 'gerador:insert_news' project.id%}" method="post">
                  {% csrf_token %}

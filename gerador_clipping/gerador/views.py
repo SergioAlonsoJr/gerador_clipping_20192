@@ -19,7 +19,7 @@ class ExplorerView(generic.ListView):
 
     def get_queryset(self):
         """ Retornar os 100 projetos mais recentes. """
-        return ClippingProject.objects.order_by('-created_date')[:100]
+        return ClippingProject.objects.order_by('-created_date')[0:1000]
 
 
 def new_project(request):
@@ -30,6 +30,33 @@ def new_project(request):
     project.save()
 
     # Por enquanto redireciona para o explorador, mas deve já abrir o clipping para edição
+    return HttpResponseRedirect(reverse('gerador:explorer'))
+
+
+def show_rename_project(request, project_id):
+    """ Exibe tela de renomear projeto """
+    project = ClippingProject.objects.get(id=project_id)
+
+    return render(request, 'gerador/rename_project.html',
+                  {'project': project, })
+
+
+def duplicate_project(request, project_id):
+    """" Duplica projeto. """
+    project = ClippingProject.objects.get(id=project_id)
+    project.pk = None
+
+    project.name = 'Cópia de ' + project.name
+    project.created_date = timezone.now()
+    project.save()
+    return HttpResponseRedirect(reverse('gerador:explorer'))
+
+
+def rename_project(request, project_id):
+    """" Renomeia projeto. """
+    project = ClippingProject.objects.get(id=project_id)
+    project.name = request.POST.get('new_name')
+    project.save()
     return HttpResponseRedirect(reverse('gerador:explorer'))
 
 

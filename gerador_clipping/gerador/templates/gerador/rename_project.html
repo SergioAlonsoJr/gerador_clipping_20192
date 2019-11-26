@@ -1,0 +1,16 @@
+<h1> Renomear projeto de clipping</h1>
+
+<form action="{% url 'gerador:rename_project' project.id %}" method="post">
+
+    {% csrf_token %}
+    <label for="old_name">Nome Atual:</labe>
+    <input type="text" name="old_name" id="old_name" value ="{{ project.name }}" readonly disabled>
+
+    <br>
+    <label for="new_name">Nome Novo:</labe>
+    <input type="text" name="new_name" id="new_name" value ="" required>
+                                    
+    <input type="submit" value="Salvar">
+
+
+</form>

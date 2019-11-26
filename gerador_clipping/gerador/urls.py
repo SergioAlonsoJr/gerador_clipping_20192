@@ -5,9 +5,15 @@ from . import views
 app_name = 'gerador'
 urlpatterns = [
     path('', views.ExplorerView.as_view(), name='explorer'),
+    path('<int:project_id>/show_rename/',
+         views.show_rename_project, name='show_rename_project'),
+    path('<int:project_id>/rename/',
+         views.rename_project, name='rename_project'),
     path('new_project/', views.new_project, name='new_project'),
     path('<int:project_id>/archive/',
          views.archive_project, name='archive_project'),
+    path('<int:project_id>/duplicate/',
+         views.duplicate_project, name='duplicate_project'),
     path('<int:project_id>/insert_news/',
          views.insert_news, name='insert_news'),
     path('<int:project_id>/clipping_organizer/',
