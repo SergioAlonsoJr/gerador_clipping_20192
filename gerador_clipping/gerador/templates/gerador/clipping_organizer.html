@@ -45,10 +45,10 @@
             </form>
             {% endif %}
             {% if not forloop.last %}
-            <form action="{% url 'gerador:news_order_down' project.id%}" method="post">
+            <form action="{% url 'gerador:news_order_up' project.id%}" method="post">
                  {% csrf_token %}
                  
-                  <input type="hidden" name="order" value="{{ news.order }}" />
+                  <input type="hidden" name="order" value="{{ news.order|add:"1" }}" />
                   <input type="submit" value="Descer"/>
             </form>
             {% endif %}
