@@ -44,6 +44,14 @@
                   <input type="submit" value="Subir"/>
             </form>
             {% endif %}
+            {% if not forloop.last %}
+            <form action="{% url 'gerador:news_order_down' project.id%}" method="post">
+                 {% csrf_token %}
+                 
+                  <input type="hidden" name="order" value="{{ news.order }}" />
+                  <input type="submit" value="Descer"/>
+            </form>
+            {% endif %}
         </td>
         </tr>
 {% endfor%}

@@ -24,6 +24,8 @@ urlpatterns = [
          views.remove_news, name='remove_news'),
     path('<int:project_id>/news_order_up/',
          views.news_order_up, name='news_order_up'),
+    path('<int:project_id>/news_order_down/',
+         views.news_order_down, name='news_order_down'),
     path('<int:project_id>/update_header/',
          views.update_header, name='update_header'),
     path('<int:project_id>/download_pdf/',

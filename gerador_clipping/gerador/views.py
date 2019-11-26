@@ -187,6 +187,26 @@ def news_order_up(request, project_id):
     return redirect(request.META.get('HTTP_REFERER'))
 
 
+def news_order_down(request, project_id):
+    """ Move uma notícia específica para baixo. """
+    project = get_object_or_404(ClippingProject, pk=project_id)
+    order = request.POST.get('order')
+
+    news_to_down = project.news_set.get(
+        order=order)
+
+    order = news_to_down.order
+
+    if news_to_down.order < project.news_set.count():
+        news_below = project.news_set.get(order=order+1)
+        news_to_down.order = order+1
+        news_below.order = order
+        news_below.save()
+        news_to_down.save()
+
+    return redirect(request.META.get('HTTP_REFERER'))
+
+
 def update_header(request, project_id):
     """ Move uma notícia específica para cima. """
     project = get_object_or_404(ClippingProject, pk=project_id)
