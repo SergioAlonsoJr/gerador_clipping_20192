@@ -19,7 +19,7 @@ class ExplorerView(generic.ListView):
     context_object_name = 'project_list'
 
     def get_queryset(self):
-        """ Retornar os 100 projetos mais recentes. """
+        """ Retornar os 1000 projetos mais recentes. """
         return ClippingProject.objects.order_by('-created_date')[0:1000]
 
 
@@ -82,7 +82,7 @@ def news_recovery(request, project_id):
     project = get_object_or_404(ClippingProject, pk=project_id)
 
     # api-endpoint
-    url = "http://127.0.0.1:8080/noticias"
+    url = "http://172.18.0.3:8080/noticias"
 
     # defining a params dict for the parameters to be sent to the API
     params = {'page': 1, 'items': 100}
