@@ -1,6 +1,11 @@
 """" As views gerenciam o que ocorre quando o usuário entra em uma URL do app"""
 import datetime
+import os
+import json
+from pathlib import Path
+import platform
 import requests
+from pyreportjasper import JasperPy
 
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import get_object_or_404, render, redirect
@@ -77,45 +82,65 @@ def archive_project(request, project_id):
     return HttpResponseRedirect(reverse('gerador:explorer'))
 
 
+BD_ADDRESS = 1
+
+
 def news_recovery(request, project_id):
     """" Permite recuperar as notícias do banco de dados com parâmetros. """
     project = get_object_or_404(ClippingProject, pk=project_id)
+    print(os.system("java -version"))
+    try:
+        params = {'page': 1, 'items': 1000}
+        is_connected = False
+        global BD_ADDRESS
+        address_to_try = BD_ADDRESS
+        while not is_connected:
+            url = "http://172.18.0." + str(address_to_try) + ":8080/noticias"
+            try:
+                api_request = requests.get(url=url, params=params)
+            except requests.exceptions.RequestException:
+                if BD_ADDRESS != 1:
+                    BD_ADDRESS = 1
 
-    # api-endpoint
-    url = "http://172.18.0.3:8080/noticias"
+                address_to_try += 1
+                if address_to_try == 7:  # Excedeu o limite de tentativas
+                    raise requests.exceptions.RequestException
 
-    # defining a params dict for the parameters to be sent to the API
-    params = {'page': 1, 'items': 100}
+            else:
+                BD_ADDRESS = address_to_try
+                is_connected = True
 
-    # sending get request and saving the response as response object
-    api_request = requests.get(url=url, params=params)
+        # extracting data in json format
+        data = api_request.json()
 
-    # extracting data in json format
-    data = api_request.json()
+        # links = data['links']
+        data = data['data']
+        for data_row in data:
+            data_row['is_included'] = project.news_set.filter(
+                source_db_id=data_row['id']).count() > 0
 
-    # links = data['links']
-    data = data['data']
-    for data_row in data:
-        data_row['is_included'] = project.news_set.filter(
-            source_db_id=data_row['id']).count() > 0
+        for news in data:
+            # remover [+N chars]
+            content = news['content']
+            if content.find('[+'):
+                content = content.split('[+')[0]
+                news['content'] = content
 
-    for news in data:
-         # remover [+N chars]
-        content = news['content']
-        if content.find('[+'):
-            content = content.split('[+')[0]
-            news['content'] = content
+            # formatar tempo para humanos e para django
+            date_time_str = news['publishedAt']
 
-        # formatar tempo para humanos e para django
-        date_time_str = news['publishedAt']
+            date_time_obj = datetime.datetime.strptime(
+                date_time_str, '%Y-%m-%dT%H:%M:%SZ')
 
-        date_time_obj = datetime.datetime.strptime(
-            date_time_str, '%Y-%m-%dT%H:%M:%SZ')
+            news['publishedAt_human'] = date_time_obj
 
-        news['publishedAt_human'] = date_time_obj
+        return render(request, 'gerador/news_recovery.html',
+                      {'project': project, 'news_result': data, })
 
-    return render(request, 'gerador/news_recovery.html',
-                  {'project': project, 'news_result': data, })
+    except requests.exceptions.RequestException:
+
+        return HttpResponse("Erro ao conectar ao Banco de Dados HealthNewsAPI."
+                            " Verifique se o serviço está executando e se há internet.")
 
 
 def insert_news(request, project_id):
@@ -217,8 +242,43 @@ def download_pdf(request, project_id):
     json_str = serializers.serialize("json", project.news_set.all(),
                                      fields=('title', 'content', 'url', 'pub_date',
                                              'author', 'url_to_image', 'header'))
-    file_name = 'clipping_' + project.name
-    response = HttpResponse(json_str, content_type='application/json')
-    response['Content-Disposition'] = 'attachment; filename=' + \
-        file_name + '.json'
+
+    data_file = os.path.dirname(os.path.abspath(__file__)) + \
+        '/data.json'
+
+    with open(data_file, 'w') as json_file:
+        json.dump(json_str, json_file)
+
+    data_folder = os.path.dirname(os.path.abspath(__file__))
+    input_file = data_folder + "/clipping_A4.jrxml"
+    print("Input: " + str(input_file))
+    output = data_folder + '/output'
+    print("Output: " + str(output))
+
+    json_query = 'fields'
+
+    print("Data File: " + data_file)
+    print(platform.system())
+
+    # return redirect(request.META.get('HTTP_REFERER'))
+    jasper = JasperPy()
+
+    jasper.process(
+        input_file,
+        output_file=output,
+        format_list=["pdf"],
+        parameters={},
+        db_connection={
+            'data_file': data_file,
+            'driver': 'json',
+            'json_query': json_query,
+        },
+        locale='pt_BR'  # LOCALE Ex.:(en_US, de_GE)
+    )
+
+    print('Result is the file below.')
+    print(output + '.pdf')
+
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename='+output
     return response

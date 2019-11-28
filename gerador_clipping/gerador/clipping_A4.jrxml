@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.10.0.final using JasperReports Library version 6.10.0-unknown  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="clipping_A4" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="a73a023b-d196-43a6-9830-f92f3cbf3b15">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="json_data_adapter.xml"/>
+	<queryString language="json">
+		<![CDATA[fields]]>
+	</queryString>
+	<field name="title" class="java.lang.String">
+		<property name="net.sf.jasperreports.json.field.expression" value="title"/>
+		<fieldDescription><![CDATA[title]]></fieldDescription>
+	</field>
+	<field name="content" class="java.lang.String">
+		<property name="net.sf.jasperreports.json.field.expression" value="content"/>
+		<fieldDescription><![CDATA[content]]></fieldDescription>
+	</field>
+	<field name="url" class="java.lang.String">
+		<property name="net.sf.jasperreports.json.field.expression" value="url"/>
+		<fieldDescription><![CDATA[url]]></fieldDescription>
+	</field>
+	<field name="pub_date" class="java.lang.String">
+		<property name="net.sf.jasperreports.json.field.expression" value="pub_date"/>
+		<fieldDescription><![CDATA[pub_date]]></fieldDescription>
+	</field>
+	<field name="author" class="java.lang.String">
+		<property name="net.sf.jasperreports.json.field.expression" value="author"/>
+		<fieldDescription><![CDATA[author]]></fieldDescription>
+	</field>
+	<field name="url_to_image" class="java.lang.String">
+		<property name="net.sf.jasperreports.json.field.expression" value="url_to_image"/>
+		<fieldDescription><![CDATA[url_to_image]]></fieldDescription>
+	</field>
+	<field name="header" class="java.lang.String">
+		<property name="net.sf.jasperreports.json.field.expression" value="header"/>
+		<fieldDescription><![CDATA[header]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="66" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="140" splitType="Stretch">
+			<textField>
+				<reportElement x="160" y="40" width="384" height="100" uuid="f5186d51-bee2-4d18-9436-dbe470dec820">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="df7944e7-ee63-4698-8dac-843b8a8aab6e"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{content}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="10" y="10" width="534" height="30" uuid="335ade3b-4afc-454c-90d6-84ff99731491"/>
+				<textElement textAlignment="Center">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{title}]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="10" y="40" width="140" height="85" uuid="4edb99eb-3d65-4b3b-ad57-4a18b5e714d7"/>
+				<imageExpression><![CDATA[$F{url_to_image}]]></imageExpression>
+			</image>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="62" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>
