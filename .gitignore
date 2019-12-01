@@ -5862,3 +5862,5 @@ gerador_clipping/env/Scripts/python.exe
 gerador_clipping/env/Scripts/pythonw.exe
 gerador_clipping/env/Scripts/sqlformat.exe
 gerador_clipping/env/Scripts/symilar.exe
+gerador_clipping/gerador/static/gerador/jasper/*
+gerador_clipping/gerador/static/gerador/jasper/data.xml
