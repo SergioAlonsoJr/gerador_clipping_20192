@@ -11,6 +11,8 @@ RUN \
     && apk add --no-cache bash \
     && apk add --no-cache --virtual=build-dependencies unzip \
     && apk add --no-cache curl \
+    && apk add --no-cache jpeg-dev zlib-dev \
+    && apk add --no-cache libmemcached-dev zlib-dev \
     && apk add --no-cache openjdk8-jre && \
     apk add --no-cache postgresql-libs && \
     apk add --no-cache --virtual .build-deps gcc musl-dev postgresql-dev && \
@@ -38,4 +40,3 @@ RUN \
 #ENV PYTHONUNBUFFERED 1
 
 #RUN pip3 install -r requirements.txt
-COPY . .

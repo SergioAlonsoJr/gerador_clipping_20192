@@ -4,10 +4,12 @@ services:
   db:
     image: postgres
   web:
+    environment:
+      - PYTHONUNBUFFERED=1
     build: .
-    command:  bash -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+    command:  bash -c "python manage.py makemigrations gerador && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
     volumes:
-      - .:/code
+      - .:/usr/src/app
     ports:
       - "8000:8000"
     depends_on:

@@ -1,21 +1,20 @@
 """" As views gerenciam o que ocorre quando o usuário entra em uma URL do app"""
 import datetime
 import os
-import json
-from pathlib import Path
-import platform
+import tempfile
 import requests
+
 from pyreportjasper import JasperPy
 
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, FileResponse
 from django.shortcuts import get_object_or_404, render, redirect
-from django.core import serializers
+from django.core import serializers, files
 
 from django.utils import timezone
 from django.urls import reverse
 from django.views import generic
 
-from .models import ClippingProject
+from .models import ClippingProject, News
 
 
 class ExplorerView(generic.ListView):
@@ -88,7 +87,7 @@ BD_ADDRESS = 1
 def news_recovery(request, project_id):
     """" Permite recuperar as notícias do banco de dados com parâmetros. """
     project = get_object_or_404(ClippingProject, pk=project_id)
-    print(os.system("java -version"))
+    # print(os.system("java -version"))
     try:
         params = {'page': 1, 'items': 1000}
         is_connected = False
@@ -157,16 +156,48 @@ def insert_news(request, project_id):
     source_db_id = request.POST.get('source_db_id')
     order = project.news_set.all().count()
 
-    project.news_set.create(title=title,
-                            content=content,
-                            url=url,
-                            pub_date=pub_date,
-                            author=author,
-                            url_to_image=url_to_image,
-                            source_db_id=source_db_id,
-                            order=order)
+    # Primeiro verifica se já temos uma imagem similar salva
+    file_name = url_to_image[8:]
+    data_folder = os.path.dirname(os.path.abspath(
+        __file__)) + "static/gerador/jasper"
+    local_file_name = data_folder + '/static/gerador/jasper/images/' + file_name
+    if os.path.exists(local_file_name):
+        print("Local File Exists")
+        temporary_file = open(local_file_name, "r")
+    else:
+        print(url_to_image)
+        try:
+            request = requests.get(url_to_image, stream=True)
+        except requests.exceptions.RequestException:
+            return HttpResponse("Erro ao baixar imagem da notícia."
+                                " Verifique se há internet.")
 
-    project.save()
+        if request.status_code != 200:
+            print(url_to_image)
+            print(request.status_code)
+            raise BaseException("Erro ao carregar imagem")
+            # Nope, error handling, skip file etc etc etc
+
+        temporary_file = tempfile.NamedTemporaryFile()
+        for block in request.iter_content(1024 * 8):
+
+            if not block:
+                break
+
+            temporary_file.write(block)
+
+    created_news = News(project=project,
+                        title=title,
+                        content=content,
+                        url=url,
+                        pub_date=pub_date,
+                        author=author,
+                        url_to_image=url_to_image,
+                        source_db_id=source_db_id,
+                        order=order)
+
+    created_news.image.save(file_name, files.File(temporary_file))
+    created_news.save()
     return HttpResponseRedirect(reverse('gerador:news_recovery', args=[project_id]))
 
 
@@ -239,46 +270,45 @@ def update_header(request, project_id):
 def download_pdf(request, project_id):
     """ Faz download do clipping como pdf. """
     project = get_object_or_404(ClippingProject, pk=project_id)
-    json_str = serializers.serialize("json", project.news_set.all(),
-                                     fields=('title', 'content', 'url', 'pub_date',
-                                             'author', 'url_to_image', 'header'))
 
-    data_file = os.path.dirname(os.path.abspath(__file__)) + \
-        '/data.json'
+    data_folder = os.path.dirname(os.path.abspath(
+        __file__)) + "/static/gerador/jasper"
 
-    with open(data_file, 'w') as json_file:
-        json.dump(json_str, json_file)
+    data_file = data_folder + '/data.xml'
 
-    data_folder = os.path.dirname(os.path.abspath(__file__))
-    input_file = data_folder + "/clipping_A4.jrxml"
-    print("Input: " + str(input_file))
-    output = data_folder + '/output'
-    print("Output: " + str(output))
+    with open(data_file, 'w') as xml_file:
+        xmlserializer = serializers.get_serializer("xml")
+        xml_serializer = xmlserializer()
+        xml_serializer.serialize(project.news_set.all(),
+                                 fields=('title', 'content', 'url', 'pub_date',
+                                         'author', 'image', 'header'),
+                                 stream=xml_file)
 
-    json_query = 'fields'
+    #
 
-    print("Data File: " + data_file)
-    print(platform.system())
+    input_file = os.path.abspath(os.path.join(
+        os.path.dirname(__file__), '..')) + "/clipping_A4_xml.jrxml"
+    print(input_file)
+    pdf_file_location = data_folder + '/clipping_' + project.name
 
-    # return redirect(request.META.get('HTTP_REFERER'))
     jasper = JasperPy()
 
     jasper.process(
         input_file,
-        output_file=output,
+        output_file=pdf_file_location,
         format_list=["pdf"],
         parameters={},
         db_connection={
             'data_file': data_file,
-            'driver': 'json',
-            'json_query': json_query,
+            'driver': 'xml',
+            'xml_xpath': 'django-objects/object',
         },
         locale='pt_BR'  # LOCALE Ex.:(en_US, de_GE)
     )
-
+    pdf_file_location = pdf_file_location + '.pdf'
     print('Result is the file below.')
-    print(output + '.pdf')
+    # print()
 
-    response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = 'attachment; filename='+output
-    return response
+    return FileResponse(open(pdf_file_location, 'rb'), content_type='application/pdf', as_attachment=True)
+
+    # return redirect(request.META.get('HTTP_REFERER'))
