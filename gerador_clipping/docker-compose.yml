@@ -3,9 +3,12 @@ version: '3'
 services:
   db:
     image: postgres
+    environment:
+      - POSTGRES_PASSWORD=1000Tei@s
   web:
     environment:
       - PYTHONUNBUFFERED=1
+      - POSTGRES_PASSWORD=1000Tei@s
     build: .
     command:  bash -c "python manage.py makemigrations gerador && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
     volumes:

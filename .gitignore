@@ -92,3 +92,5 @@ local_settings.py
 
 .env
 db.sqlite3
+gerador_clipping/gerador_clipping.code-workspace
+gerador_clipping/gerador_clipping.code-workspace
