@@ -87,14 +87,14 @@
                   <input type="hidden" name="source_db_id" value="{{ news.id }}" />
                   
                   
-                  <input type="submit" value="Incluir"/>
+                  <input type="submit" onclick="this.disabled=true,this.form.submit();" value="Incluir"/>
             </form>
             {% else %}
              <form action="{% url 'gerador:remove_news' project.id%}" method="post">
                  {% csrf_token %}
                  
                   <input type="hidden" name="source_db_id" value="{{ news.id }}" />
-                  <input type="submit" value="Remover"/>
+                  <input type="submit" onclick="this.disabled=true,this.form.submit();" value="Remover"/>
             </form>
 
             {% endif %}

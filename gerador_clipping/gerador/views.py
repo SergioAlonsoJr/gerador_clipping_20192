@@ -81,38 +81,34 @@ def archive_project(request, project_id):
     return HttpResponseRedirect(reverse('gerador:explorer'))
 
 
-BD_ADDRESS = 1
-
-
 def news_recovery(request, project_id):
     """" Permite recuperar as notícias do banco de dados com parâmetros. """
     project = get_object_or_404(ClippingProject, pk=project_id)
-    # print(os.system("java -version"))
     try:
         params = {'page': 1, 'items': 1000}
         is_connected = False
-        global BD_ADDRESS
-        address_to_try = BD_ADDRESS
+
+        bd_address = request.session.get('bd_address')
+        if not bd_address:
+            bd_address = 1
+        address_to_try = bd_address
         while not is_connected:
             url = "http://172.18.0." + str(address_to_try) + ":8080/noticias"
             try:
                 api_request = requests.get(url=url, params=params)
             except requests.exceptions.RequestException:
-                if BD_ADDRESS != 1:
-                    BD_ADDRESS = 1
+                request.session['bd_address'] = 1
 
                 address_to_try += 1
                 if address_to_try == 7:  # Excedeu o limite de tentativas
                     raise requests.exceptions.RequestException
 
             else:
-                BD_ADDRESS = address_to_try
+                request.session['bd_address'] = address_to_try
                 is_connected = True
 
-        # extracting data in json format
         data = api_request.json()
 
-        # links = data['links']
         data = data['data']
         for data_row in data:
             data_row['is_included'] = project.news_set.filter(
@@ -156,36 +152,6 @@ def insert_news(request, project_id):
     source_db_id = request.POST.get('source_db_id')
     order = project.news_set.all().count()
 
-    # Primeiro verifica se já temos uma imagem similar salva
-    file_name = url_to_image[8:]
-    data_folder = os.path.dirname(os.path.abspath(
-        __file__)) + "static/gerador/jasper"
-    local_file_name = data_folder + '/static/gerador/jasper/images/' + file_name
-    if os.path.exists(local_file_name):
-        print("Local File Exists")
-        temporary_file = open(local_file_name, "r")
-    else:
-        print(url_to_image)
-        try:
-            request = requests.get(url_to_image, stream=True)
-        except requests.exceptions.RequestException:
-            return HttpResponse("Erro ao baixar imagem da notícia."
-                                " Verifique se há internet.")
-
-        if request.status_code != 200:
-            print(url_to_image)
-            print(request.status_code)
-            raise BaseException("Erro ao carregar imagem")
-            # Nope, error handling, skip file etc etc etc
-
-        temporary_file = tempfile.NamedTemporaryFile()
-        for block in request.iter_content(1024 * 8):
-
-            if not block:
-                break
-
-            temporary_file.write(block)
-
     created_news = News(project=project,
                         title=title,
                         content=content,
@@ -196,7 +162,28 @@ def insert_news(request, project_id):
                         source_db_id=source_db_id,
                         order=order)
 
+    # Primeiro verifica se já temos uma imagem similar salva
+    file_name = url_to_image[8:]
+
+    try:
+        request = requests.get(url_to_image, stream=True)
+    except requests.exceptions.RequestException:
+        return HttpResponse("Erro ao baixar imagem da notícia."
+                            " Verifique se há internet.")
+
+    if request.status_code != 200:
+        raise BaseException("Erro ao carregar imagem: " +
+                            request.status_code + url_to_image)
+
+    temporary_file = tempfile.NamedTemporaryFile()
+    for block in request.iter_content(1024 * 8):
+        if not block:
+            break
+
+        temporary_file.write(block)
+
     created_news.image.save(file_name, files.File(temporary_file))
+
     created_news.save()
     return HttpResponseRedirect(reverse('gerador:news_recovery', args=[project_id]))
 
@@ -213,6 +200,7 @@ def remove_news(request, project_id):
 
     for news in news_to_remove:
         order_of_deleted_news = news.order
+        news.image.delete()
         news.delete()
         news_to_reorder = project.news_set.filter(
             order__gt=order_of_deleted_news)
@@ -284,11 +272,8 @@ def download_pdf(request, project_id):
                                          'author', 'image', 'header'),
                                  stream=xml_file)
 
-    #
-
     input_file = os.path.abspath(os.path.join(
         os.path.dirname(__file__), '..')) + "/clipping_A4_xml.jrxml"
-    print(input_file)
     pdf_file_location = data_folder + '/clipping_' + project.name
 
     jasper = JasperPy()
@@ -306,9 +291,6 @@ def download_pdf(request, project_id):
         locale='pt_BR'  # LOCALE Ex.:(en_US, de_GE)
     )
     pdf_file_location = pdf_file_location + '.pdf'
-    print('Result is the file below.')
-    # print()
 
-    return FileResponse(open(pdf_file_location, 'rb'), content_type='application/pdf', as_attachment=True)
-
-    # return redirect(request.META.get('HTTP_REFERER'))
+    return FileResponse(open(pdf_file_location, 'rb'), content_type='application/pdf',
+                        as_attachment=True)

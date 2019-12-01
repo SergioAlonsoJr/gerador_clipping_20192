@@ -19,7 +19,7 @@
                 <label for="header">Cabeçalho:</label>
                 <input type="text" name="header" id="header" value="{{ news.header }}" />
                 <input type="hidden" name="order" value="{{ news.order }}" />
-                <input type="submit" value="Atualizar"/>
+                <input type="submit" onclick="this.disabled=true,this.form.submit();" value="Atualizar"/>
             </form>
             <strong> {{news.title}} </strong>
         </td>
@@ -31,7 +31,7 @@
                  {% csrf_token %}
                  
                   <input type="hidden" name="source_db_id" value="{{ news.source_db_id }}" />
-                  <input type="submit" value="Remover"/>
+                  <input type="submit" onclick="this.disabled=true,this.form.submit();" value="Remover"/>
             </form>
 
             {% if news.order > 0%}
@@ -39,7 +39,7 @@
                  {% csrf_token %}
                  
                   <input type="hidden" name="order" value="{{ news.order }}" />
-                  <input type="submit" value="Subir"/>
+                  <input type="submit" onclick="this.disabled=true,this.form.submit();" value="Subir"/>
             </form>
             {% endif %}
             {% if not forloop.last %}
@@ -47,7 +47,7 @@
                  {% csrf_token %}
                  
                   <input type="hidden" name="order" value="{{ news.order|add:"1" }}" />
-                  <input type="submit" value="Descer"/>
+                  <input type="submit" onclick="this.disabled=true,this.form.submit();" value="Descer"/>
             </form>
             {% endif %}
         </td>
