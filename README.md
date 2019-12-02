@@ -11,6 +11,6 @@ Entre na pasta:
 
 `gerador_clipping_20192/gerador_clipping`
 
-Inicie o Docker
+Inicie o Docker-Compose (requer versão 1.13 ou superior)
 
 `docker-compose up`
