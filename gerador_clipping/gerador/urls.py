@@ -1,5 +1,7 @@
 """" Para onde cada URL deve direcionar o usuário. """
 from django.urls import path
+from django.conf import settings
+from django.conf.urls.static import static
 from . import views
 
 app_name = 'gerador'
@@ -22,14 +24,18 @@ urlpatterns = [
          views.clipping_organizer, name='clipping_organizer'),
     path('<int:project_id>/remove_news/',
          views.remove_news, name='remove_news'),
+    path('<int:project_id>/update_image_news/',
+         views.update_image_news, name='update_image_news'),
     path('<int:project_id>/news_order_up/',
          views.news_order_up, name='news_order_up'),
     path('<int:project_id>/update_header/',
          views.update_header, name='update_header'),
     path('<int:project_id>/download_pdf/',
          views.download_pdf, name='download_pdf'),
+    path('<int:project_id>/download_jpeg/',
+         views.download_jpeg, name='download_jpeg'),
 
     path('<int:project_id>/recovery/', views.news_recovery, name='news_recovery'),
     path('<int:project_id>/organizer/',
          views.clipping_organizer, name='organizer'),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

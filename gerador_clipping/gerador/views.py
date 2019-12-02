@@ -2,13 +2,17 @@
 import datetime
 import os
 import tempfile
+import zipfile
 import requests
+
+from pdf2image import convert_from_path
 
 from pyreportjasper import JasperPy
 
 from django.http import HttpResponseRedirect, HttpResponse, FileResponse
 from django.shortcuts import get_object_or_404, render, redirect
 from django.core import serializers, files
+
 
 from django.utils import timezone
 from django.urls import reverse
@@ -255,6 +259,27 @@ def update_header(request, project_id):
     return redirect(request.META.get('HTTP_REFERER'))
 
 
+def update_image_news(request, project_id):
+    """ Substitui a imagem de uma notícia. """
+    if request.method == 'POST' and request.FILES.get('new_image', False):
+        project = get_object_or_404(ClippingProject, pk=project_id)
+        order = request.POST.get('order')
+
+        news_selected = project.news_set.get(
+            order=order)
+
+        new_image = request.FILES['new_image']
+
+        news_selected.image.delete()
+        news_selected.image.save(new_image.name, files.File(new_image))
+        news_selected.source_db_id = "0"
+        news_selected.url_to_image = news_selected.image.url
+
+        news_selected.save()
+
+    return redirect(request.META.get('HTTP_REFERER'))
+
+
 def download_pdf(request, project_id):
     """ Faz download do clipping como pdf. """
     project = get_object_or_404(ClippingProject, pk=project_id)
@@ -294,3 +319,56 @@ def download_pdf(request, project_id):
 
     return FileResponse(open(pdf_file_location, 'rb'), content_type='application/pdf',
                         as_attachment=True)
+
+
+def download_jpeg(request, project_id):
+    """ Faz download do clipping como jpeg. """
+
+    project = get_object_or_404(ClippingProject, pk=project_id)
+
+    data_folder = os.path.dirname(os.path.abspath(
+        __file__)) + "/static/gerador/jasper"
+
+    data_file = data_folder + '/data.xml'
+
+    with open(data_file, 'w') as xml_file:
+        xmlserializer = serializers.get_serializer("xml")
+        xml_serializer = xmlserializer()
+        xml_serializer.serialize(project.news_set.all(),
+                                 fields=('title', 'content', 'url', 'pub_date',
+                                         'author', 'image', 'header'),
+                                 stream=xml_file)
+
+    input_file = os.path.abspath(os.path.join(
+        os.path.dirname(__file__), '..')) + "/clipping_TV_xml.jrxml"
+    pdf_file_location = data_folder + '/clipping_TV_' + project.name
+
+    jasper = JasperPy()
+
+    jasper.process(
+        input_file,
+        output_file=pdf_file_location,
+        format_list=["pdf"],
+        parameters={},
+        db_connection={
+            'data_file': data_file,
+            'driver': 'xml',
+            'xml_xpath': 'django-objects/object',
+        },
+        locale='pt_BR'
+    )
+    pdf_file = pdf_file_location + '.pdf'
+
+    pages = convert_from_path('pdf_file_location', 500)
+    for index, page in enumerate(pages):
+        page.save(pdf_file+'/'+index+'_out.jpg', 'JPEG')
+
+    zipf = zipfile.ZipFile(
+        data_folder + '/clipping_tv.zip', 'w', zipfile.ZIP_DEFLATED)
+    for root, _, pages in os.walk(pdf_file_location+'/'):
+        for file in pages:
+            zipf.write(os.path.join(root, file))
+
+    zipf.close()
+
+    return redirect(request.META.get('HTTP_REFERER'))

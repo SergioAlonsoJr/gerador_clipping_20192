@@ -26,7 +26,7 @@ class News(models.Model):
     author = models.CharField(max_length=500, default='0')
     url_to_image = models.CharField(max_length=500, default='0')
     image = models.ImageField(
-        upload_to='gerador/static/gerador/jasper/images', blank=True, max_length=1000)
+        upload_to='gerador/jasper/images', blank=True, max_length=1000)
     source_db_id = models.CharField(max_length=500, default='0')
     header = models.CharField(max_length=500, default="")
 

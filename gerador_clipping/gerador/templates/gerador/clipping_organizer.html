@@ -1,9 +1,14 @@
+{% load static %}
+
 <h1>Ordene as notícias e insira cabeçalhos</h1>
 
 <hr>
 <a href="{% url 'gerador:news_recovery' project.id %}">Recuperar mais notícias</a>
 <br>
 <a href="{% url 'gerador:download_pdf' project.id %}">Gerar Clipping PDF</a>
+<br>
+<!-- Readicionar exportar JPEG -->
+<a href="{% url 'gerador:download_jpeg' project.id %}"></a>
 
 <table>
 
@@ -11,7 +16,7 @@
     <tr>
        
         <td>
-            <img src="{{ news.url_to_image}}" height="100">
+            <img src="{{ news.url_to_image }}" height="100">
         </td>
         <td>
             <form action="{% url 'gerador:update_header' project.id%}" method="post">
@@ -21,11 +26,22 @@
                 <input type="hidden" name="order" value="{{ news.order }}" />
                 <input type="submit" onclick="this.disabled=true,this.form.submit();" value="Atualizar"/>
             </form>
+            
             <strong> {{news.title}} </strong>
+            
+            <form action="{% url 'gerador:update_image_news' project.id%}" method="post" enctype="multipart/form-data">
+                 {% csrf_token %}
+                  <label for="new_image">Nova Imagem:</label>
+                  <input type="hidden" name="order" value="{{ news.order }}" />
+                  <input type="file" name="new_image" id="new_image" accept="image/*">
+                  <input type="submit" onclick="this.disabled=true,this.form.submit();" value="Atualizar Imagem"/>
+            </form>
         </td>
         <td>
             
             <br>
+
+            
             
             <form action="{% url 'gerador:remove_news' project.id%}" method="post">
                  {% csrf_token %}
