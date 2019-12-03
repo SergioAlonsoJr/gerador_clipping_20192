@@ -2,6 +2,7 @@
 """" Os modelos dos dados do aplicativo. """
 from django.db import models\
 
+from django_resized import ResizedImageField
 
 
 class ClippingProject(models.Model):
@@ -36,3 +37,33 @@ class News(models.Model):
 
     class Meta:
         ordering = ["order"]
+
+    """ 
+    def crop_image(self):
+        
+
+        img = Image.open(self.image.path)
+        # Size of the image in pixels (size of orginal image)
+        # (This is not mandatory)
+        width, height = img.size
+        left = 0
+        top = 0
+        right = width
+        bottom = height
+        if width >= height * 16/9:
+            # imagem muito horizontal, recorta esquerda e direita
+            new_width = int(height/(16/9))
+            left = int(new_width-width)/2
+            right = new_width-left
+        else:
+            # imagem muito vertical, recorta cima e baixo
+            new_height = int(width*(16/9))
+            top = int(new_height-height)/2
+            bottom = new_height-top
+
+        cropped_image = img.crop(
+            (left, top, right, bottom))
+        self.image.save(self.image.name, cropped_image)
+
+        self.save()
+    """

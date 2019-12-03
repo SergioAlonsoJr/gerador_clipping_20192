@@ -1,4 +1,4 @@
-FROM python:3-alpine
+FROM python:3.5-alpine
 WORKDIR /usr/src/app
 COPY requirements.txt .
 RUN apk update 

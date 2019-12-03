@@ -4,7 +4,6 @@ import os
 import tempfile
 import zipfile
 import socket
-import urllib.parse
 import requests
 
 from pdf2image import convert_from_path
@@ -25,6 +24,7 @@ from .models import ClippingProject, News
 
 class ExplorerView(generic.ListView):
     """" Permite gerenciar projetos de clipping. """
+
     template_name = 'gerador/explorer.html'
     context_object_name = 'project_list'
 
@@ -240,7 +240,6 @@ def insert_news(request, project_id):
         temporary_file.write(block)
 
     created_news.image.save(file_name, files.File(temporary_file))
-
     created_news.save()
     return HttpResponseRedirect(reverse('gerador:news_recovery', args=[project_id]))
 

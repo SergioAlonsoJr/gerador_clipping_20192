@@ -4,3 +4,4 @@ requests>=2.20
 pyreportjasper>=1.0
 Pillow
 pdf2image
+django-resized

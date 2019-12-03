@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.10.0.final using JasperReports Library version 6.10.0-unknown  -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="clipping_2" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="5e14971c-e424-4702-9533-7f01d6bfbec1">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="clipping_2" pageWidth="595" pageHeight="842" columnWidth="595" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="5e14971c-e424-4702-9533-7f01d6bfbec1">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DataAdapter.xml"/>
+	<style name="Style1"/>
 	<queryString language="XPath">
 		<![CDATA[django-objects/object]]>
 	</queryString>
@@ -60,118 +61,168 @@
 		</property>
 	</field>
 	<background>
-		<band splitType="Stretch"/>
+		<band height="842" splitType="Stretch">
+			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<image scaleImage="FillFrame" hAlign="Center" vAlign="Middle">
+				<reportElement mode="Transparent" x="0" y="0" width="595" height="842" uuid="bb80ae96-ff19-4d74-8d5f-99bb00260f1c">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0"/>
+				<imageExpression><![CDATA["media/background.png"]]></imageExpression>
+			</image>
+		</band>
 	</background>
 	<title>
-		<band height="201" splitType="Stretch">
-			<image hAlign="Center">
-				<reportElement x="1" y="0" width="549" height="150" uuid="0eee2f75-9c78-462b-b134-09674c7ee458"/>
+		<band height="165" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
+			<image>
+				<reportElement x="0" y="0" width="595" height="165" uuid="990193b2-9dc6-4418-bf7a-fe86f0b5d120"/>
 				<imageExpression><![CDATA["media/header.png"]]></imageExpression>
 			</image>
-			<staticText>
-				<reportElement x="1" y="140" width="548" height="60" forecolor="#13457D" uuid="90aca0d5-92ac-4e35-ba34-7a75c83a21a2"/>
-				<box leftPadding="0">
-					<pen lineWidth="5.0" lineColor="#C6C5C1"/>
-					<topPen lineWidth="0.0"/>
-					<leftPen lineWidth="0.0"/>
-					<bottomPen lineWidth="7.0" lineColor="#C6C5C1"/>
-					<rightPen lineWidth="0.0"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="SansSerif" size="18" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Clipping de Notícias  de eventos de interesse à saúde]]></text>
-			</staticText>
 		</band>
 	</title>
-	<pageHeader>
-		<band height="25" splitType="Stretch"/>
-	</pageHeader>
-	<columnHeader>
-		<band height="55" splitType="Stretch">
+	<detail>
+		<band height="165" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.grid.JSSGridBagLayout"/>
+			<image scaleImage="FillFrame" hAlign="Center" vAlign="Bottom">
+				<reportElement x="0" y="0" width="274" height="165" uuid="93f352a1-84d4-4ac7-a871-b840a9826b7e">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.layout.grid.x" value="0"/>
+					<property name="com.jaspersoft.layout.grid.y" value="0"/>
+					<property name="com.jaspersoft.layout.grid.weight.x" value="46.0"/>
+					<property name="com.jaspersoft.layout.grid.weight.y" value="100.0"/>
+					<property name="com.jaspersoft.layout.grid.rowspan" value="4"/>
+					<property name="com.jaspersoft.layout.grid.colspan" value="1"/>
+					<property name="com.jaspersoft.layout.grid.weight.fixed" value="false"/>
+				</reportElement>
+				<box topPadding="10" leftPadding="20" bottomPadding="10" rightPadding="10"/>
+				<imageExpression><![CDATA["media/"+$F{image}]]></imageExpression>
+			</image>
 			<textField isBlankWhenNull="true">
-				<reportElement x="0" y="10" width="550" height="30" forecolor="#12467D" uuid="1c80599a-d17e-4f1d-a0f6-007c4e7197b8"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="SansSerif" size="14" isBold="true"/>
+				<reportElement x="274" y="0" width="321" height="25" forecolor="#000000" uuid="1c80599a-d17e-4f1d-a0f6-007c4e7197b8">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.layout.grid.x" value="1"/>
+					<property name="com.jaspersoft.layout.grid.y" value="0"/>
+					<property name="com.jaspersoft.layout.grid.weight.x" value="54.0"/>
+					<property name="com.jaspersoft.layout.grid.weight.y" value="15.0"/>
+					<property name="com.jaspersoft.layout.grid.rowspan" value="1"/>
+					<property name="com.jaspersoft.layout.grid.colspan" value="1"/>
+					<property name="com.jaspersoft.layout.grid.weight.fixed" value="false"/>
+					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
+				</reportElement>
+				<box topPadding="10" leftPadding="5" bottomPadding="2" rightPadding="20"/>
+				<textElement textAlignment="Left" verticalAlignment="Top" markup="rtf">
+					<font fontName="SansSerif" size="10" isBold="false"/>
+					<paragraph leftIndent="4" rightIndent="10"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{header}]]></textFieldExpression>
 			</textField>
-			<line>
-				<reportElement x="0" y="10" width="549" height="1" forecolor="#C6C5C1" uuid="f9599218-2fd1-4d5c-a390-e4d44ceba977"/>
-			</line>
-			<line>
-				<reportElement x="1" y="40" width="549" height="1" forecolor="#C6C5C1" uuid="c87f8915-efc1-463d-8520-9c8a153c67b5"/>
-			</line>
-		</band>
-	</columnHeader>
-	<detail>
-		<band height="275" splitType="Stretch">
-			<rectangle>
-				<reportElement mode="Transparent" x="-2" y="10" width="551" height="240" uuid="e5d4ce9a-eb53-4975-879b-6f67f3139eb4"/>
-				<graphicElement>
-					<pen lineWidth="3.0" lineStyle="Dashed" lineColor="rgba(0, 0, 0, 0.50980395)"/>
-				</graphicElement>
-			</rectangle>
 			<textField>
-				<reportElement x="20" y="30" width="510" height="40" forecolor="#0838A1" uuid="069f958e-8628-4af2-ba3b-76354a91c13b">
+				<reportElement style="Style1" x="274" y="25" width="321" height="35" forecolor="#000000" uuid="069f958e-8628-4af2-ba3b-76354a91c13b">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="5e8f869b-c673-4fa5-9c5a-41288ee875bf"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.layout.grid.x" value="1"/>
+					<property name="com.jaspersoft.layout.grid.y" value="1"/>
+					<property name="com.jaspersoft.layout.grid.weight.x" value="30.0"/>
+					<property name="com.jaspersoft.layout.grid.weight.y" value="21.0"/>
+					<property name="com.jaspersoft.layout.grid.rowspan" value="1"/>
+					<property name="com.jaspersoft.layout.grid.colspan" value="1"/>
+					<property name="com.jaspersoft.layout.grid.weight.fixed" value="false"/>
 				</reportElement>
-				<textElement textAlignment="Center">
-					<font fontName="SansSerif" size="14" isBold="true" isItalic="false" isUnderline="false"/>
+				<box topPadding="2" leftPadding="5" bottomPadding="2" rightPadding="20"/>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font fontName="SansSerif" size="12" isBold="true" isItalic="false" isUnderline="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{title}]]></textFieldExpression>
 			</textField>
-			<image hAlign="Center">
-				<reportElement x="20" y="77" width="170" height="110" uuid="93f352a1-84d4-4ac7-a871-b840a9826b7e"/>
-				<imageExpression><![CDATA["media/"+$F{image}]]></imageExpression>
-			</image>
 			<textField>
-				<reportElement x="20" y="190" width="510" height="30" uuid="1be2b745-54ea-4d0d-a8c6-cbafdb78a59e">
-					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="4604146f-bffd-45fd-bcb8-01fb23025ca9"/>
-				</reportElement>
-				<textElement>
-					<font fontName="SansSerif"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{url}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="200" y="77" width="330" height="80" uuid="83189e92-cccf-459f-a9e6-586995af7b38">
+				<reportElement x="274" y="60" width="321" height="81" uuid="83189e92-cccf-459f-a9e6-586995af7b38">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="af0838ae-9637-4249-adaf-9e9a71641a42"/>
+					<property name="com.jaspersoft.layout.grid.x" value="1"/>
+					<property name="com.jaspersoft.layout.grid.y" value="2"/>
+					<property name="com.jaspersoft.layout.grid.weight.x" value="30.0"/>
+					<property name="com.jaspersoft.layout.grid.weight.y" value="50.0"/>
+					<property name="com.jaspersoft.layout.grid.rowspan" value="1"/>
+					<property name="com.jaspersoft.layout.grid.colspan" value="1"/>
+					<property name="com.jaspersoft.layout.grid.weight.fixed" value="false"/>
+					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 				</reportElement>
+				<box topPadding="2" leftPadding="5" bottomPadding="2" rightPadding="20"/>
+				<textElement textAlignment="Justified">
+					<font size="10"/>
+					<paragraph rightIndent="0"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{content}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="380" y="220" width="150" height="20" uuid="14f00a97-db10-42ec-9537-b4df00d76397">
-					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="22f61bb1-3a75-4b84-87ae-92164a82a5ab"/>
-				</reportElement>
-				<textElement textAlignment="Right">
-					<font fontName="SansSerif" size="9"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{author}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="20" y="220" width="180" height="20" uuid="f8bd4348-9f1b-4846-97ef-a9c717875723">
+				<reportElement x="274" y="141" width="321" height="24" uuid="f8bd4348-9f1b-4846-97ef-a9c717875723">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="8e9dc27a-9ac6-41d0-a5db-d0a76cf43659"/>
+					<property name="com.jaspersoft.layout.grid.x" value="1"/>
+					<property name="com.jaspersoft.layout.grid.y" value="3"/>
+					<property name="com.jaspersoft.layout.grid.weight.x" value="30.0"/>
+					<property name="com.jaspersoft.layout.grid.weight.y" value="15.0"/>
+					<property name="com.jaspersoft.layout.grid.rowspan" value="1"/>
+					<property name="com.jaspersoft.layout.grid.colspan" value="1"/>
+					<property name="com.jaspersoft.layout.grid.weight.fixed" value="false"/>
 				</reportElement>
-				<textElement>
+				<box topPadding="2" leftPadding="5" bottomPadding="10" rightPadding="20"/>
+				<textElement textAlignment="Left" verticalAlignment="Bottom">
 					<font fontName="SansSerif" size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{human_pub_date}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{human_pub_date}+ " | "+ $F{author}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
-	<columnFooter>
-		<band height="30" splitType="Stretch"/>
-	</columnFooter>
-	<pageFooter>
-		<band height="115" splitType="Stretch">
-			<image>
-				<reportElement x="222" y="0" width="110" height="110" uuid="4b09e01d-36c1-4b2e-a42f-9c2ff162ed59"/>
+	<summary>
+		<band height="330" splitType="Stretch">
+			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.grid.JSSGridBagLayout"/>
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<image hAlign="Center" vAlign="Middle">
+				<reportElement x="0" y="0" width="595" height="165" uuid="4497586b-21b8-491a-a1e3-75ee81bae594">
+					<property name="com.jaspersoft.layout.grid.x" value="0"/>
+					<property name="com.jaspersoft.layout.grid.y" value="0"/>
+					<property name="com.jaspersoft.layout.grid.weight.x" value="1.0"/>
+					<property name="com.jaspersoft.layout.grid.weight.y" value="1.0"/>
+					<property name="com.jaspersoft.layout.grid.rowspan" value="1"/>
+					<property name="com.jaspersoft.layout.grid.colspan" value="1"/>
+					<property name="com.jaspersoft.layout.grid.weight.fixed" value="false"/>
+				</reportElement>
+				<box topPadding="20" leftPadding="20" bottomPadding="20" rightPadding="20"/>
 				<imageExpression><![CDATA["media/logo_sit.png"]]></imageExpression>
 			</image>
+			<staticText>
+				<reportElement x="0" y="165" width="595" height="165" uuid="c45ae1a2-8303-43a8-8211-cfac3b041c7d">
+					<property name="com.jaspersoft.layout.grid.x" value="0"/>
+					<property name="com.jaspersoft.layout.grid.y" value="1"/>
+					<property name="com.jaspersoft.layout.grid.weight.x" value="1.0"/>
+					<property name="com.jaspersoft.layout.grid.weight.y" value="1.0"/>
+					<property name="com.jaspersoft.layout.grid.rowspan" value="1"/>
+					<property name="com.jaspersoft.layout.grid.colspan" value="1"/>
+					<property name="com.jaspersoft.layout.grid.weight.fixed" value="false"/>
+				</reportElement>
+				<box topPadding="10" leftPadding="20" bottomPadding="10" rightPadding="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Elaboração
+Isabela Karen Pereira Gonçalves
+Tradução
+Isabela Karen Pereira Gonçalves
+Equipe Editorial
+Joaquim Bastos
+Sala de Situação – Faculdade de Ciências da Saúde (UnB)
+Revisão
+Patrícia Paiva Pereira]]></text>
+			</staticText>
 		</band>
-	</pageFooter>
-	<summary>
-		<band height="16" splitType="Stretch"/>
 	</summary>
 </jasperReport>
