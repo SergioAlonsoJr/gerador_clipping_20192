@@ -63,11 +63,13 @@
                     </ul>
                     <div class="clearfix"></div>
                   </div>
-                  
+                  <h4> Criar novo clipping</h4>
                   <form action="{% url 'gerador:new_project'  %}" method="post">
+                  
                     {% csrf_token %}
-
-                    <input type="submit" value="Novo" class="btn btn-success">
+                    <label for"clipping_name">Nome</label>
+                    <input type="text" name="clipping_name" id="clipping_name" placeholder="" required minlength="1" >
+                    <input type="submit" value="Criar" class="btn btn-success">
                   </form>
 
                   <div class="x_content">
@@ -91,10 +93,10 @@
                                   {{project.created_date|naturalday:"SHORT_DATE_FORMAT" }} {{ project.created_date|time:"H:i" }}
                                 </td>
                                 <td>
-                                  <a href="{% url 'gerador:duplicate_project' project.id%}"> <i class="fa fa-copy"></i></a>
-                                  <a href="{% url 'gerador:download_pdf' project.id%}"> <i class="fa fa-cloud-download"></i></a>
-                                  <a href="{% url 'gerador:show_rename_project' project.id%}"> <i class="fa fa-edit"></i></a>
-                                  <a href="{% url 'gerador:show_archive_project' project.id%}"> <i class="fa fa-trash-o"></i></a>
+                                  <a href="{% url 'gerador:duplicate_project' project.id%}"> <i class="fa fa-copy" title="Duplicar"></i></a>
+                                  <a href="{% url 'gerador:download_pdf' project.id%}"> <i class="fa fa-cloud-download" title="Exportar PDF"></i></a>
+                                  <a href="{% url 'gerador:show_rename_project' project.id%}"> <i class="fa fa-edit" title="Renomear"></i></a>
+                                  <a href="{% url 'gerador:show_archive_project' project.id%}"> <i class="fa fa-trash-o" title="Deletar"></i></a>
                                 </td>
                             </tr>
                             {% endif %}
@@ -156,37 +158,3 @@
 	
   </body>
 </html>
-
-
-<!--
-
-<form action="{% url 'gerador:new_project'  %}" method="post">
-{% csrf_token %}
-
-<input type="submit" value="Novo">
-</form>
-<table>
-    <tr>
-        <th>Nome</th>
-        <th>Data</th>
-        <th>Ações</th>
-    </tr>
-{% for project in project_list %}
-{% if project.is_archived == False%}
-    <tr>
-        <td><a href="{% url 'gerador:news_recovery' project.id %}">{{project.name}}</a></td>
-        <td>{{project.created_date}} </td>
-        <td>
-            <form action="{% url 'gerador:archive_project' project.id %}" method="post">
-                {% csrf_token %}
-               
-               
-                <input type="submit" value="Arquivar">
-            </form>
-
-        </td>
-    </tr>
-    {% endif %}
-{% endfor %}
-</table>
--->

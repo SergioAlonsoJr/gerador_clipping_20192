@@ -89,3 +89,5 @@ local_settings.py
 db.sqlite3
 gerador_clipping/gerador/static/gerador/jasper/
 gerador_clipping/media/gerador/
+
+!/gerador_clipping/gerador/Assets/**/*

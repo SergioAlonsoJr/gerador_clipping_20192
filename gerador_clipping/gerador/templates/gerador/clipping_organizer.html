@@ -46,7 +46,8 @@
               <div class="title_right">
               </div>
             </div>
-
+            <a href="{% url 'gerador:explorer' %}"><input type="button" class="btn btn-default" value="Voltar ao explorador de projetos"></a>
+            
             <a href="{% url 'gerador:news_recovery' project.id %}"><input type="button" class="btn btn-default" value="Recuperar mais notícias"></a>
             <a href="{% url 'gerador:download_pdf' project.id %}"><input type="button" class="btn btn-primary" value="Gerar Clipping PDF"></a>
             <br>
@@ -70,7 +71,7 @@
                       <form action="{% url 'gerador:update_header' project.id%}" method="post">
                           {% csrf_token %}
                           <label for="header">Cabeçalho:</label>
-                          <input type="text" name="header" id="header" value="{{ news.header }}" />
+                          <input type="text" name="header" id="header" value="{{ news.header }}" required minlength="1"/>
                           <input type="hidden" name="order" value="{{ news.order }}" />
                           <input type="submit" class="btn btn-primary" onclick="this.disabled=true,this.form.submit();" value="Atualizar"/>
                       </form>
@@ -78,7 +79,7 @@
                           {% csrf_token %}
                           <label for="new_image">Nova Imagem:</label>
                           <input type="hidden" name="order" value="{{ news.order }}" />
-                          <input type="file" name="new_image" id="new_image" accept="image/*">
+                          <input type="file" name="new_image" id="new_image" accept="image/*" required minlength="1">
                           <input type="submit" class="btn btn-primary" onclick="this.disabled=true,this.form.submit();" value="Atualizar Imagem"/>
                       </form>
                       </td>

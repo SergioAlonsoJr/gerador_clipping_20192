@@ -4,6 +4,7 @@ import os
 import tempfile
 import zipfile
 import socket
+import urllib.parse
 import requests
 
 from pdf2image import convert_from_path
@@ -34,7 +35,8 @@ class ExplorerView(generic.ListView):
 
 def new_project(request):
     """" Cria novo projeto e redireciona para tela de edição. """
-    name = str(ClippingProject.objects.count()+1)
+    name = request.POST.get('clipping_name', str(
+        ClippingProject.objects.count()+1))
     created_date = timezone.now()
     project = ClippingProject(name=name, created_date=created_date)
     project.save()
@@ -348,7 +350,10 @@ def download_pdf(request, project_id):
 
     input_file = os.path.abspath(os.path.join(
         os.path.dirname(__file__), '..')) + "/clipping_A4_xml.jrxml"
-    pdf_file_location = data_folder + '/clipping_' + project.name
+
+    clean_name = ''.join(e for e in project.name if e.isalnum())
+    pdf_file_location = data_folder + '/clipping_' + \
+        str(project.id) + '_' + clean_name
 
     jasper = JasperPy()
 
