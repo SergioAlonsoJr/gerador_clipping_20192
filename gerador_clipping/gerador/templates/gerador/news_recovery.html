@@ -67,7 +67,7 @@
                     <form action="{% url 'gerador:news_recovery' project.id%}">
                     
                         <label for="search_term">Termo de Busca </label>
-                        <input type="text" name="search_term" id="search_term" placeholder="{{search_terms}}">
+                        <input type="text" name="search_term" id="search_term" value="{{search_terms}}">
 
                         <br>
                         <b>Idade:</b>
@@ -84,7 +84,7 @@
                         <label for="1m">1 mês</label>
         
                         <input type="radio" name="age" value="99999999" id="any" {% if age >= 100 %} checked {% endif %}/>
-                        <label for="any">1 mês</label>
+                        <label for="any">Qualquer</label>
         
                         <br>
                         <b>Ordernar:</b>
