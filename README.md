@@ -3,9 +3,8 @@ Gerador de Clippings da Disciplina Sistemas de Informação 2019.2
 
 # Como instalar imagem
 
- 0. O banco de dados da [HealthNewsAPI](https://github.com/healthnewsapi/HealthNewsAPI) precisa estar executando.
- 
- 1. Execute o docker com a imagem:
+- O banco de dados da [HealthNewsAPI](https://github.com/healthnewsapi/HealthNewsAPI) precisa estar executando.
+- Execute o docker com a imagem:
  
 `sudo docker run sergioalonsojr/gerador_clipping`
 
