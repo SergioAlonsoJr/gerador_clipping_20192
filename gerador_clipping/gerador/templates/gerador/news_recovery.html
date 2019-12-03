@@ -119,15 +119,15 @@
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
-                    <table>
-                      <tr>
+                    <table width="100%">
+                      <td style="width:20%;text-align:center">
                       <td><img src="{{ news.urlToImage}}" height="140"></td>
-                      <td>
+                      <td style="width:67%">
                       <p><i>{{news.publishedAt_human|naturalday:"D d M Y"}}</i></p>
                       <p><i>{{news.author}}</i></p>
                       <p> {{news.content}} <a href="{{news.url}}" target="_blank"><input type="button" class="btn btn-link" value="Ler Mais..."></a></p>
                       </td>
-                      <td>
+                      <td style="width:23%;text-align:center">
                       {% if news.is_included == False %}
                       <form action="{% url 'gerador:insert_news' project.id%}" method="post">
                            {% csrf_token %}
