@@ -4,6 +4,7 @@ import os
 import tempfile
 import zipfile
 import requests
+import socket
 
 from pdf2image import convert_from_path
 
@@ -88,14 +89,18 @@ def archive_project(request, project_id):
 def news_recovery(request, project_id):
     """" Permite recuperar as notícias do banco de dados com parâmetros. """
     project = get_object_or_404(ClippingProject, pk=project_id)
+    hostname = socket.gethostname()
+    ip_addr = socket.gethostbyname(hostname)
+    ip_split = ip_addr.split('.')
     try:
         params = {'page': request.GET.get('page', 1), 'items': 5000}
         is_connected = False
 
-        bd_address = request.session.get('bd_address', 1)
-        address_to_try = bd_address
+        address_to_try = request.session.get('bd_address', 0)
         while not is_connected:
-            url = "http://172.19.0." + str(address_to_try) + ":8080/noticias"
+            url = 'http://'+ip_split[0] + '.' + ip_split[1] + \
+                '.' + ip_split[2] + '.' + \
+                str(address_to_try) + ":8080/noticias"
             try:
                 api_request = requests.get(url=url, params=params)
             except requests.exceptions.RequestException:
