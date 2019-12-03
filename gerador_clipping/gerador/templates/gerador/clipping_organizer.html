@@ -1,72 +1,167 @@
+{% load humanize %}
 {% load static %}
 
-<h1>Ordene as notícias e insira cabeçalhos</h1>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="icon" href="images/favicon.ico" type="image/ico" />
 
-<hr>
-<a href="{% url 'gerador:news_recovery' project.id %}">Recuperar mais notícias</a>
-<br>
-<a href="{% url 'gerador:download_pdf' project.id %}">Gerar Clipping PDF</a>
-<br>
-<!-- Readicionar exportar JPEG -->
-<a href="{% url 'gerador:download_jpeg' project.id %}"></a>
+    <title>Ordenador de Notícias</title>
 
-<table>
+    <!-- Bootstrap -->
+    <link href="{% static 'gerador/Assets/gentelella/vendors/bootstrap/dist/css/bootstrap.min.css' %}" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="{% static 'gerador/Assets/gentelella/vendors/font-awesome/css/font-awesome.min.css'%}" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="{% static 'gerador/Assets/gentelella/vendors/nprogress/nprogress.css'%}" rel="stylesheet">
+    <!-- iCheck -->
+    <link href="{% static 'gerador/Assets/gentelella/vendors/iCheck/skins/flat/green.css'%}" rel="stylesheet">
+  
+    <!-- bootstrap-progressbar -->
+    <link href="{% static 'gerador/Assets/gentelella/vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css'%}" rel="stylesheet">
+    <!-- JQVMap -->
+    <link href="{% static 'gerador/Assets/gentelella/vendors/jqvmap/dist/jqvmap.min.css' %}" rel="stylesheet"/>
+    <!-- bootstrap-daterangepicker -->
+    <link href="{% static 'gerador/Assets/gentelella/vendors/bootstrap-daterangepicker/daterangepicker.css'%}" rel="stylesheet">
 
-{% for news in news_set  %}
-    <tr>
-       
-        <td>
-            <img src="{{ news.url_to_image }}" height="100">
-        </td>
-        <td>
-            <form action="{% url 'gerador:update_header' project.id%}" method="post">
-                {% csrf_token %}
-                <label for="header">Cabeçalho:</label>
-                <input type="text" name="header" id="header" value="{{ news.header }}" />
-                <input type="hidden" name="order" value="{{ news.order }}" />
-                <input type="submit" onclick="this.disabled=true,this.form.submit();" value="Atualizar"/>
-            </form>
-            
-            <strong> {{news.title}} </strong>
-            
-            <form action="{% url 'gerador:update_image_news' project.id%}" method="post" enctype="multipart/form-data">
-                 {% csrf_token %}
-                  <label for="new_image">Nova Imagem:</label>
-                  <input type="hidden" name="order" value="{{ news.order }}" />
-                  <input type="file" name="new_image" id="new_image" accept="image/*">
-                  <input type="submit" onclick="this.disabled=true,this.form.submit();" value="Atualizar Imagem"/>
-            </form>
-        </td>
-        <td>
-            
+    <!-- Custom Theme Style -->
+    <link href="{% static 'gerador/Assets/gentelella/build/css/custom.min.css'%}" rel="stylesheet">
+  </head>
+
+  <body class="nav-md" style="background-color: white;">
+
+<!-- page content -->
+        <div class="right_col" role="main">
+          <div class="">
+            <div class="page-title">
+              <div class="title_left">
+                <h3 style="text-align: center;">Ordene as notícias e insira cabeçalhos</h3>
+              </div>
+
+              <div class="title_right">
+              </div>
+            </div>
+
+            <a href="{% url 'gerador:news_recovery' project.id %}"><input type="button" class="btn btn-default" value="Recuperar mais notícias"></a>
+            <a href="{% url 'gerador:download_pdf' project.id %}"><input type="button" class="btn btn-primary" value="Gerar Clipping PDF"></a>
             <br>
 
+            {% for news in news_set  %}
+            <div class="clearfix"></div>
+            <div class="row">
+              <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h2>{{news.title}}</h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                    </ul>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+                    <table width="100%">
+                      <tr>
+                      <td style="width:20%;"><img src="{{ news.url_to_image }}" height="140"></td>
+                      <td style="width:67%">
+                      <form action="{% url 'gerador:update_header' project.id%}" method="post">
+                          {% csrf_token %}
+                          <label for="header">Cabeçalho:</label>
+                          <input type="text" name="header" id="header" value="{{ news.header }}" />
+                          <input type="hidden" name="order" value="{{ news.order }}" />
+                          <input type="submit" class="btn btn-primary" onclick="this.disabled=true,this.form.submit();" value="Atualizar"/>
+                      </form>
+                      <form action="{% url 'gerador:update_image_news' project.id%}" method="post" enctype="multipart/form-data">
+                          {% csrf_token %}
+                          <label for="new_image">Nova Imagem:</label>
+                          <input type="hidden" name="order" value="{{ news.order }}" />
+                          <input type="file" name="new_image" id="new_image" accept="image/*">
+                          <input type="submit" class="btn btn-primary" onclick="this.disabled=true,this.form.submit();" value="Atualizar Imagem"/>
+                      </form>
+                      </td>
+                      <td style="width:23%;text-align:center">
+                        <form action="{% url 'gerador:remove_news' project.id%}" method="post">
+                             {% csrf_token %}
+                             
+                              <input type="hidden" name="source_db_id" value="{{ news.source_db_id }}" />
+                              <input type="submit" class="btn btn-danger" onclick="this.disabled=true,this.form.submit();" value="Remover"/>
+                        </form>
             
-            
-            <form action="{% url 'gerador:remove_news' project.id%}" method="post">
-                 {% csrf_token %}
-                 
-                  <input type="hidden" name="source_db_id" value="{{ news.source_db_id }}" />
-                  <input type="submit" onclick="this.disabled=true,this.form.submit();" value="Remover"/>
-            </form>
+                        {% if news.order > 0%}
+                        <form action="{% url 'gerador:news_order_up' project.id%}" method="post">
+                             {% csrf_token %}
+                             
+                              <input type="hidden" name="order" value="{{ news.order }}" />
+                              <input type="submit" class="btn btn-success" onclick="this.disabled=true,this.form.submit();" value="Subir"/>
+                        </form>
+                        {% endif %}
+                        {% if not forloop.last %}
+                        <form action="{% url 'gerador:news_order_up' project.id%}" method="post">
+                             {% csrf_token %}
+                             
+                              <input type="hidden" name="order" value="{{ news.order|add:"1" }}" />
+                              <input type="submit" class="btn btn-warning" onclick="this.disabled=true,this.form.submit();" value="Descer"/>
+                        </form>
+                        {% endif %}
+                      </td>
+                      </tr>
+                    </table>
+                  </div>
 
-            {% if news.order > 0%}
-            <form action="{% url 'gerador:news_order_up' project.id%}" method="post">
-                 {% csrf_token %}
-                 
-                  <input type="hidden" name="order" value="{{ news.order }}" />
-                  <input type="submit" onclick="this.disabled=true,this.form.submit();" value="Subir"/>
-            </form>
-            {% endif %}
-            {% if not forloop.last %}
-            <form action="{% url 'gerador:news_order_up' project.id%}" method="post">
-                 {% csrf_token %}
-                 
-                  <input type="hidden" name="order" value="{{ news.order|add:"1" }}" />
-                  <input type="submit" onclick="this.disabled=true,this.form.submit();" value="Descer"/>
-            </form>
-            {% endif %}
-        </td>
-        </tr>
-{% endfor%}
-</table>
+                </div>
+              </div>
+            </div>
+            {% endfor%}
+
+            </div>
+
+        <!-- /page content -->
+
+        <!-- Linha para fazer o javascript funcionar -->
+        <a id="download" href="javascript:void(0);" download="cropped.png"></a>
+
+        <!-- footer content -->
+        <footer>
+          <div class="pull-right">
+            CENTEIAS 2019
+          </div>
+          <div class="clearfix"></div>
+        </footer>
+        <!-- /footer content -->
+      </div>
+    </div>
+    <!-- jQuery -->
+    <script src="{% static '/gerador/Assets/gentelella/vendors/jquery/dist/jquery.min.js'%}"></script>
+    <!-- Bootstrap -->
+    <script src="{% static '/gerador/Assets/gentelella/vendors/bootstrap/dist/js/bootstrap.min.js'%}"></script>
+    <!-- FastClick -->
+    <script src="{% static '/gerador/Assets/gentelella/vendors/fastclick/lib/fastclick.js'%}"></script>
+    <!-- NProgress -->
+    <script src="{% static '/gerador/Assets/gentelella/vendors/nprogress/nprogress.js' %}"></script>
+    <!-- iCheck -->
+    <script src="{% static '/gerador/Assets/gentelella/vendors/iCheck/icheck.min.js'%}"></script>
+    <!-- Datatables -->
+    <script src="{% static '/gerador/Assets/gentelella/vendors/datatables.net/js/jquery.dataTables.min.js'%}"></script>
+    <script src="{% static '/gerador/Assets/gentelella/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js'%}"></script>
+    <script src="{% static '/gerador/Assets/gentelella/vendors/datatables.net-buttons/js/dataTables.buttons.min.js'%}"></script>
+    <script src="{% static '/gerador/Assets/gentelella/vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js'%}"></script>
+    <script src="{% static '/gerador/Assets/gentelella/vendors/datatables.net-buttons/js/buttons.flash.min.js'%}"></script>
+    <script src="{% static '/gerador/Assets/gentelella/vendors/datatables.net-buttons/js/buttons.html5.min.js'%}"></script>
+    <script src="{% static '/gerador/Assets/gentelella/vendors/datatables.net-buttons/js/buttons.print.min.js'%}"></script>
+    <script src="{% static '/gerador/Assets/gentelella/vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js'%}"></script>
+    <script src="{% static '/gerador/Assets/gentelella/vendors/datatables.net-keytable/js/dataTables.keyTable.min.js'%}"></script>
+    <script src="{% static '/gerador/Assets/gentelella/vendors/datatables.net-responsive/js/dataTables.responsive.min.js'%}"></script>
+    <script src="{% static '/gerador/Assets/gentelella/vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js' %}"></script>
+    <script src="{% static '/gerador/Assets/gentelella/vendors/datatables.net-scroller/js/dataTables.scroller.min.js'%}"></script>
+    <script src="{% static '/gerador/Assets/gentelella/vendors/jszip/dist/jszip.min.js'%}"></script>
+    <script src="{% static '/gerador/Assets/gentelella/vendors/pdfmake/build/pdfmake.min.js'%}"></script>
+    <script src="{% static '/gerador/Assets/gentelella/vendors/pdfmake/build/vfs_fonts.js'%}"></script>
+
+    <!-- Custom Theme Scripts -->
+    <script src="{% static '/gerador/Assets/gentelella/build/js/custom.min.js' %}"></script>
+	
+  </body>
+</html>

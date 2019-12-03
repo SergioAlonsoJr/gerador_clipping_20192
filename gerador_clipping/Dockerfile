@@ -13,5 +13,6 @@ RUN apk add --no-cache poppler-utils
 RUN apk add --no-cache postgresql-libs 
 RUN apk add --no-cache --virtual .build-deps gcc musl-dev postgresql-dev
 RUN apk add ttf-dejavu
+RUN apk add terminus-font
 RUN python3 -m pip install -r requirements.txt --no-cache-dir
 RUN apk --purge del .build-deps 

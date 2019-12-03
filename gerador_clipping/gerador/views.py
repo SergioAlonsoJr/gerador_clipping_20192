@@ -95,7 +95,7 @@ def news_recovery(request, project_id):
         bd_address = request.session.get('bd_address', 1)
         address_to_try = bd_address
         while not is_connected:
-            url = "http://172.18.0." + str(address_to_try) + ":8080/noticias"
+            url = "http://172.19.0." + str(address_to_try) + ":8080/noticias"
             try:
                 api_request = requests.get(url=url, params=params)
             except requests.exceptions.RequestException:
