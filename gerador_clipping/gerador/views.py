@@ -3,8 +3,8 @@ import datetime
 import os
 import tempfile
 import zipfile
-import requests
 import socket
+import requests
 
 from pdf2image import convert_from_path
 
