@@ -23,6 +23,7 @@ class News(models.Model):
     content = models.CharField(max_length=500)
     url = models.CharField(max_length=500)
     pub_date = models.DateTimeField('published date')
+    human_pub_date = models.CharField(max_length=500, default='0')
     author = models.CharField(max_length=500, default='0')
     url_to_image = models.CharField(max_length=500, default='0')
     image = models.ImageField(

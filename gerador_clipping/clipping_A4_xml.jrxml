@@ -54,6 +54,11 @@
 		</property>
 		<fieldDescription><![CDATA[header]]></fieldDescription>
 	</field>
+	<field name="human_pub_date" class="java.lang.String">
+		<property name="net.sf.jasperreports.xpath.field.expression">
+			<![CDATA[field[@name="human_pub_date"]]]>
+		</property>
+	</field>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -111,7 +116,7 @@
 				<reportElement x="20" y="30" width="510" height="40" forecolor="#0838A1" uuid="069f958e-8628-4af2-ba3b-76354a91c13b">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="5e8f869b-c673-4fa5-9c5a-41288ee875bf"/>
 				</reportElement>
-				<textElement>
+				<textElement textAlignment="Center">
 					<font fontName="SansSerif" size="14" isBold="true" isItalic="false" isUnderline="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{title}]]></textFieldExpression>
@@ -151,7 +156,7 @@
 				<textElement>
 					<font fontName="SansSerif" size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{pub_date}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{human_pub_date}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

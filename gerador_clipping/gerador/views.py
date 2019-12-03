@@ -205,6 +205,7 @@ def insert_news(request, project_id):
     pub_date = request.POST.get('publishedAt')
     url_to_image = request.POST.get('urlToImage')
     source_db_id = request.POST.get('source_db_id')
+    human_pub_date = request.POST.get('human_pub_date')
     order = project.news_set.all().count()
 
     created_news = News(project=project,
@@ -215,7 +216,8 @@ def insert_news(request, project_id):
                         author=author,
                         url_to_image=url_to_image,
                         source_db_id=source_db_id,
-                        order=order)
+                        order=order,
+                        human_pub_date=human_pub_date)
 
     # Primeiro verifica se já temos uma imagem similar salva
     file_name = url_to_image[8:]
@@ -345,7 +347,7 @@ def download_pdf(request, project_id):
         xml_serializer = xmlserializer()
         xml_serializer.serialize(project.news_set.all(),
                                  fields=('title', 'content', 'url', 'pub_date',
-                                         'author', 'image', 'header'),
+                                         'author', 'image', 'header', 'human_pub_date'),
                                  stream=xml_file)
 
     input_file = os.path.abspath(os.path.join(
