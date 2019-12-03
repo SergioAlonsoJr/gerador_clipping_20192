@@ -47,7 +47,7 @@ def show_rename_project(request, project_id):
     project = ClippingProject.objects.get(id=project_id)
 
     return render(request, 'gerador/rename_project.html',
-                  {'project': project, })
+                  {'project': project})
 
 
 def duplicate_project(request, project_id):
@@ -89,12 +89,10 @@ def news_recovery(request, project_id):
     """" Permite recuperar as notícias do banco de dados com parâmetros. """
     project = get_object_or_404(ClippingProject, pk=project_id)
     try:
-        params = {'page': 1, 'items': 1000}
+        params = {'page': request.GET.get('page', 1), 'items': 5000}
         is_connected = False
 
-        bd_address = request.session.get('bd_address')
-        if not bd_address:
-            bd_address = 1
+        bd_address = request.session.get('bd_address', 1)
         address_to_try = bd_address
         while not is_connected:
             url = "http://172.18.0." + str(address_to_try) + ":8080/noticias"
@@ -111,30 +109,64 @@ def news_recovery(request, project_id):
                 request.session['bd_address'] = address_to_try
                 is_connected = True
 
-        data = api_request.json()
+        raw_data = api_request.json()
 
-        data = data['data']
-        for data_row in data:
-            data_row['is_included'] = project.news_set.filter(
-                source_db_id=data_row['id']).count() > 0
+        news_list = raw_data['data']
 
-        for news in data:
+        search_age = int(request.GET.get('age', 7))
+
+        # Filtro por Idade
+        for i in range(len(news_list) - 1, -1, -1):
+            found_term = False
+            # formatar tempo para humanos e para django
+            date_time_str = news_list[i]['publishedAt']
+
+            date_time_obj = datetime.datetime.strptime(
+                date_time_str, '%Y-%m-%dT%H:%M:%SZ')
+
+            date_difference = datetime.datetime.now(
+                date_time_obj.tzinfo) - date_time_obj
+
+            if date_difference.days > search_age:
+                del news_list[i]
+                continue
+
+            news_list[i]['publishedAt_human'] = date_time_obj
+
+        search_term_packed = request.GET.get('search_term', '')
+        search_terms = search_term_packed.split()
+
+        # Filtro por search_term
+        if len(search_terms) > 0:
+            for i in range(len(news_list) - 1, -1, -1):
+                found_term = False
+                for search_term in search_terms:
+                    if search_term in news_list[i]['title'] or \
+                            search_term in news_list[i]['content']:
+                        found_term = True
+                        break
+
+                if found_term:
+                    continue
+
+                del news_list[i]
+
+        # configura detalhes nas notícias filtradas
+        for news in news_list:
+            # Marca notícias que já foram inclusas
+            news['is_included'] = project.news_set.filter(
+                source_db_id=news['id']).count() > 0
+
             # remover [+N chars]
             content = news['content']
             if content.find('[+'):
                 content = content.split('[+')[0]
                 news['content'] = content
 
-            # formatar tempo para humanos e para django
-            date_time_str = news['publishedAt']
-
-            date_time_obj = datetime.datetime.strptime(
-                date_time_str, '%Y-%m-%dT%H:%M:%SZ')
-
-            news['publishedAt_human'] = date_time_obj
-
         return render(request, 'gerador/news_recovery.html',
-                      {'project': project, 'news_result': data, })
+                      {'project': project, 'news_result': news_list,
+                       'search_terms': search_term_packed,
+                       'age': search_age})
 
     except requests.exceptions.RequestException:
 

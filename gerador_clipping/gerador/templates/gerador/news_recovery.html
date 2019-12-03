@@ -1,118 +1,212 @@
 {% load humanize %}
+{% load static %}
 
-<h2>Recupere notícias e as inclua no Clipping {{project.name}}</h2>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="images/favicon.ico" type="image/ico" />
 
-<form action="{% url 'gerador:news_recovery' project.id%}">
-<!--
-    <b>Doenças:</b>
-    <input type="checkbox" name="disease" value="aids" id="aids" checked>
-    <label for="aids">aids</label>
+    <title>Recuperador de Notícias</title>
 
-    <input type="checkbox" name="disease" value="dengue" id="dengue" checked>
-    <label for="dengue">dengue</label>
+    <!-- Bootstrap -->
+    <link href="{% static 'gerador/Assets/gentelella/vendors/bootstrap/dist/css/bootstrap.min.css' %}" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="{% static 'gerador/Assets/gentelella/vendors/font-awesome/css/font-awesome.min.css'%}" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="{% static 'gerador/Assets/gentelella/vendors/nprogress/nprogress.css'%}" rel="stylesheet">
+    <!-- iCheck -->
+    <link href="{% static 'gerador/Assets/gentelella/vendors/iCheck/skins/flat/green.css'%}" rel="stylesheet">
+  
+    <!-- bootstrap-progressbar -->
+    <link href="{% static 'gerador/Assets/gentelella/vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css'%}" rel="stylesheet">
+    <!-- JQVMap -->
+    <link href="{% static 'gerador/Assets/gentelella/vendors/jqvmap/dist/jqvmap.min.css' %}" rel="stylesheet"/>
+    <!-- bootstrap-daterangepicker -->
+    <link href="{% static 'gerador/Assets/gentelella/vendors/bootstrap-daterangepicker/daterangepicker.css'%}" rel="stylesheet">
 
-    <input type="checkbox" name="disease" value="ebola" id="ebola" checked>
-    <label for="ebola">ebola</label>
+    <!-- Custom Theme Style -->
+    <link href="{% static 'gerador/Assets/gentelella/build/css/custom.min.css'%}" rel="stylesheet">
+  </head>
 
-    <input type="checkbox" name="disease" value="sarampo" id="sarampo" checked>
-    <label for="sarampo">sarampo</label>
+  <body class="nav-md" style="background-color: white;">
 
-    <input type="checkbox" name="disease" value="cancer" id="cancer" checked>
-    <label for="cancer">câncer</label>
+<!-- page content -->
+        <div class="right_col" role="main">
+          <div class="">
+            <div class="page-title">
+              <div class="title_left">
+                <h3 style="text-align: center;">Recupere as notícias e as inclua no clipping</h3>
+              </div>
 
-    <input type="text" name="extra_disease">
--->
-    
-    <!--
-        <br>
-        <b>Lugar:</b>
-    -->
-    
-    <!--
-    <br>
-    <b>Idade:</b>
-    <input type="radio" name="age" value="24h" id="24h" checked/>
-    <label for="24h">24h</label>
+              <div class="title_right">
+              </div>
+            </div>
 
-    <input type="radio" name="age" value="2d" id="2d"/>
-    <label for="2d">2 dias</label>
+            <a href="{% url 'gerador:explorer' %}"><input type="button" class="btn btn-default" value="Voltar ao explorador de projetos"></a>
+            <a href="{% url 'gerador:clipping_organizer' project.id %}"><input type="button" class="btn btn-primary" value="Organizar e Exportar"></a>
+            <br>
 
-    <input type="radio" name="age" value="1s" id="1s"/>
-    <label for="1s">1 semana</label>
+            <div class="clearfix"></div>
+            <div class="row">
+              <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h2>Filtros</h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                      </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+                    <form action="{% url 'gerador:news_recovery' project.id%}">
+                    
+                        <label for="search_term">Termo de Busca </label>
+                        <input type="text" name="search_term" id="search_term" placeholder="{{search_terms}}">
 
-    <input type="radio" name="age" value="1m" id="1m"/>
-    <label for="1m">1 mês</label>
-
-    <input type="radio" name="age" value="any" id="any"/>
-    <label for="any">1 mês</label>
-
-    <br>
-    <b>Ordernar:</b>
-    
-    <input type="radio" name="sort" value="score" id="score" checked/>
-    <label for="score">relevância</label>
-    
-    <input type="radio" name="sort" value="date" id="date"/>
-    <label for="date">data</label>
-    
-    <br>
-    
-    <input type="submit" value="Buscar"/>
--->
-    
-
-</form>
-
-<a href="{% url 'gerador:explorer' %}">Voltar ao explorador de projetos</a>
-<br>
-<a href="{% url 'gerador:clipping_organizer' project.id %}">Organizar e Exportar</a>
-<br>
-
-
-<table>
-
-{% for news in news_result  %}
-    <tr>
-        <td>
-           
-            {% if news.is_included == False %}
-            <form action="{% url 'gerador:insert_news' project.id%}" method="post">
-                 {% csrf_token %}
-                  <input type="hidden" name="title" value="{{ news.title }}" />
-                  <input type="hidden" name="content" value="{{ news.content }}" />
-                  <input type="hidden" name="author" value="{{ news.author }}" />
-                  <input type="hidden" name="url" value="{{ news.url }}" />
-                  <input type="hidden" name="publishedAt" value="{{ news.publishedAt }}" />
-                  <input type="hidden" name="urlToImage" value="{{ news.urlToImage }}" />
-                  <input type="hidden" name="source_db_id" value="{{ news.id }}" />
-                  
-                  
-                  <input type="submit" onclick="this.disabled=true,this.form.submit();" value="Incluir"/>
-            </form>
-            {% else %}
-             <form action="{% url 'gerador:remove_news' project.id%}" method="post">
-                 {% csrf_token %}
-                 
-                  <input type="hidden" name="source_db_id" value="{{ news.id }}" />
-                  <input type="submit" onclick="this.disabled=true,this.form.submit();" value="Remover"/>
-            </form>
-
-            {% endif %}
-        </td>
-        <td>
-            <img src="{{ news.urlToImage}}" height="140">
-        </td>
-        <td>
-            <strong> {{news.title}} </strong>
-                {{news.publishedAt_human|naturalday:"D d M Y"}} <br>{{news.author}}
-        </td>
+                        <br>
+                        <b>Idade:</b>
+                        <input type="radio" name="age" value="1" id="24h" {% if age == 1 %} checked {% endif %}/>
+                        <label for="24h">24h</label>
+                    
+                        <input type="radio" name="age" value="2" id="2d" {% if age == 2 %} checked {% endif %} />
+                        <label for="2d">2 dias</label>
         
-        <td>
-            <p> {{news.content}} <a href="{{news.url}}" target="_blank">Ver mais</a></p>
-        </td>
+                        <input type="radio" name="age" value="7" id="1s" {% if age == 7 %} checked {% endif %}/>
+                        <label for="1s">1 semana</label>
         
-        </tr>
-{% endfor%}
-</table>
+                        <input type="radio" name="age" value="30" id="1m" {% if age == 30 %} checked {% endif %}/>
+                        <label for="1m">1 mês</label>
+        
+                        <input type="radio" name="age" value="99999999" id="any" {% if age >= 100 %} checked {% endif %}/>
+                        <label for="any">1 mês</label>
+        
+                        <br>
+                        <b>Ordernar:</b>
+                        
+                        <input type="radio" name="sort" value="score" id="score" checked/>
+                        <label for="score">relevância</label>
+                        
+                        <input type="radio" name="sort" value="date" id="date"/>
+                        <label for="date">data</label>
+                                              
+                        <br>
+    
+                        <input type="submit" value="Buscar" class="btn btn-success">
+                    </form>
+                  </div>
 
-</form>
+                </div>
+              </div>
+            </div>
+
+            {% for news in news_result  %}
+            <div class="clearfix"></div>
+            <div class="row">
+              <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h2> {{news.title}} </h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                      </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+                    <table>
+                      <tr>
+                      <td><img src="{{ news.urlToImage}}" height="140"></td>
+                      <td>
+                      <p><i>{{news.publishedAt_human|naturalday:"D d M Y"}}</i></p>
+                      <p><i>{{news.author}}</i></p>
+                      <p> {{news.content}} <a href="{{news.url}}" target="_blank"><input type="button" class="btn btn-link" value="Ler Mais..."></a></p>
+                      </td>
+                      <td>
+                      {% if news.is_included == False %}
+                      <form action="{% url 'gerador:insert_news' project.id%}" method="post">
+                           {% csrf_token %}
+                            <input type="hidden" name="title" value="{{ news.title }}" />
+                            <input type="hidden" name="content" value="{{ news.content }}" />
+                            <input type="hidden" name="author" value="{{ news.author }}" />
+                            <input type="hidden" name="url" value="{{ news.url }}" />
+                            <input type="hidden" name="publishedAt" value="{{ news.publishedAt }}" />
+                            <input type="hidden" name="urlToImage" value="{{ news.urlToImage }}" />
+                            <input type="hidden" name="source_db_id" value="{{ news.id }}" />
+                            
+                            <input type="submit" onclick="this.disabled=true,this.form.submit();" class="btn btn-success" value="Incluir">
+                      </form>
+                      {% else %}
+                       <form action="{% url 'gerador:remove_news' project.id%}" method="post">
+                           {% csrf_token %}
+                           
+                            <input type="hidden" name="source_db_id" value="{{ news.id }}" />
+                            <input type="submit" onclick="this.disabled=true,this.form.submit();" class="btn btn-danger" value="Remover">
+                      </form>
+          
+                      {% endif %}
+                      </td>
+                      </tr>
+                    </table>
+
+                  </div>
+
+                </div>
+              </div>
+            </div>
+            {% endfor%}
+
+            </div>
+
+        <!-- /page content -->
+
+        <!-- Linha para fazer o javascript funcionar -->
+        <a id="download" href="javascript:void(0);" download="cropped.png"></a>
+
+        <!-- footer content -->
+        <footer>
+          <div class="pull-right">
+            CENTEIAS 2019
+          </div>
+          <div class="clearfix"></div>
+        </footer>
+        <!-- /footer content -->
+      </div>
+    </div>
+    <!-- jQuery -->
+    <script src="{% static '/gerador/Assets/gentelella/vendors/jquery/dist/jquery.min.js'%}"></script>
+    <!-- Bootstrap -->
+    <script src="{% static '/gerador/Assets/gentelella/vendors/bootstrap/dist/js/bootstrap.min.js'%}"></script>
+    <!-- FastClick -->
+    <script src="{% static '/gerador/Assets/gentelella/vendors/fastclick/lib/fastclick.js'%}"></script>
+    <!-- NProgress -->
+    <script src="{% static '/gerador/Assets/gentelella/vendors/nprogress/nprogress.js' %}"></script>
+    <!-- iCheck -->
+    <script src="{% static '/gerador/Assets/gentelella/vendors/iCheck/icheck.min.js'%}"></script>
+    <!-- Datatables -->
+    <script src="{% static '/gerador/Assets/gentelella/vendors/datatables.net/js/jquery.dataTables.min.js'%}"></script>
+    <script src="{% static '/gerador/Assets/gentelella/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js'%}"></script>
+    <script src="{% static '/gerador/Assets/gentelella/vendors/datatables.net-buttons/js/dataTables.buttons.min.js'%}"></script>
+    <script src="{% static '/gerador/Assets/gentelella/vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js'%}"></script>
+    <script src="{% static '/gerador/Assets/gentelella/vendors/datatables.net-buttons/js/buttons.flash.min.js'%}"></script>
+    <script src="{% static '/gerador/Assets/gentelella/vendors/datatables.net-buttons/js/buttons.html5.min.js'%}"></script>
+    <script src="{% static '/gerador/Assets/gentelella/vendors/datatables.net-buttons/js/buttons.print.min.js'%}"></script>
+    <script src="{% static '/gerador/Assets/gentelella/vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js'%}"></script>
+    <script src="{% static '/gerador/Assets/gentelella/vendors/datatables.net-keytable/js/dataTables.keyTable.min.js'%}"></script>
+    <script src="{% static '/gerador/Assets/gentelella/vendors/datatables.net-responsive/js/dataTables.responsive.min.js'%}"></script>
+    <script src="{% static '/gerador/Assets/gentelella/vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js' %}"></script>
+    <script src="{% static '/gerador/Assets/gentelella/vendors/datatables.net-scroller/js/dataTables.scroller.min.js'%}"></script>
+    <script src="{% static '/gerador/Assets/gentelella/vendors/jszip/dist/jszip.min.js'%}"></script>
+    <script src="{% static '/gerador/Assets/gentelella/vendors/pdfmake/build/pdfmake.min.js'%}"></script>
+    <script src="{% static '/gerador/Assets/gentelella/vendors/pdfmake/build/vfs_fonts.js'%}"></script>
+
+    <!-- Custom Theme Scripts -->
+    <script src="{% static '/gerador/Assets/gentelella/build/js/custom.min.js' %}"></script>
+
+  </body>
+</html>
