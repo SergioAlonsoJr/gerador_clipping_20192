@@ -89,10 +89,10 @@
                         <br>
                         <b>Ordernar:</b>
                         
-                        <input type="radio" name="sort" value="score" id="score" checked/>
+                        <input type="radio" name="sort" value="score" id="score"  {% if sort == 'score' %} checked {% endif %}/>
                         <label for="score">relevância</label>
                         
-                        <input type="radio" name="sort" value="date" id="date"/>
+                        <input type="radio" name="sort" value="date" id="date"  {% if sort == 'date' %} checked {% endif %}/>
                         <label for="date">data</label>
                                               
                         <br>

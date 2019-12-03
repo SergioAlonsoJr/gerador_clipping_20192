@@ -132,6 +132,8 @@ def news_recovery(request, project_id):
                 continue
 
             news_list[i]['publishedAt_human'] = date_time_obj
+            news_list[i]['age_minutes'] = date_difference.days * \
+                60*24 + date_difference.seconds/60
 
         search_term_packed = request.GET.get('search_term', '')
         search_terms = search_term_packed.split()
@@ -151,8 +153,17 @@ def news_recovery(request, project_id):
 
                 del news_list[i]
 
+        # Ordena por score ou published_at
+        sort = request.GET.get('sort', 'score')
+
+        if sort == 'score':
+            news_list = sorted(news_list, key=lambda k: k['score'])
+        else:
+            news_list = sorted(news_list, key=lambda k: k['age_minutes'])
+
         # configura detalhes nas notícias filtradas
         for news in news_list:
+
             # Marca notícias que já foram inclusas
             news['is_included'] = project.news_set.filter(
                 source_db_id=news['id']).count() > 0
@@ -166,7 +177,8 @@ def news_recovery(request, project_id):
         return render(request, 'gerador/news_recovery.html',
                       {'project': project, 'news_result': news_list,
                        'search_terms': search_term_packed,
-                       'age': search_age})
+                       'age': search_age,
+                       'sort': sort})
 
     except requests.exceptions.RequestException:
 
