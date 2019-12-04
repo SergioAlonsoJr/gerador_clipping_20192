@@ -24,4 +24,4 @@ services:
 networks:
   default:
     external:
-      name: aluno_default
+      name: healthnewsapi_default
