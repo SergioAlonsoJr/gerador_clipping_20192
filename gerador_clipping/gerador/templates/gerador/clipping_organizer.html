@@ -70,7 +70,7 @@
                       <td style="width:67%">
                       <form action="{% url 'gerador:update_header' project.id%}" method="post">
                           {% csrf_token %}
-                          <label for="header">Cabeçalho:</label>
+                          <label for="header">Tópico:</label>
                           <input type="text" name="header" id="header" value="{{ news.header }}" required minlength="1"/>
                           <input type="hidden" name="order" value="{{ news.order }}" />
                           <input type="submit" class="btn btn-primary" onclick="this.disabled=true,this.form.submit();" value="Atualizar"/>

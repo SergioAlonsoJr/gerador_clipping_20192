@@ -128,13 +128,13 @@
 					<hyperlinkReferenceExpression><![CDATA[$F{url}]]></hyperlinkReferenceExpression>
 				</textField>
 			</frame>
-			<image scaleImage="FillFrame" hAlign="Left" vAlign="Top" hyperlinkType="Reference" hyperlinkTarget="Blank">
-				<reportElement x="0" y="15" width="278" height="145" uuid="93f352a1-84d4-4ac7-a871-b840a9826b7e">
+			<image scaleImage="RetainShape" hAlign="Right" vAlign="Bottom" hyperlinkType="Reference" hyperlinkTarget="Blank">
+				<reportElement x="0" y="15" width="274" height="145" uuid="93f352a1-84d4-4ac7-a871-b840a9826b7e">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.y" value="px"/>
 					<property name="com.jaspersoft.layout.grid.x" value="0"/>
 					<property name="com.jaspersoft.layout.grid.y" value="1"/>
-					<property name="com.jaspersoft.layout.grid.weight.x" value="48.0"/>
+					<property name="com.jaspersoft.layout.grid.weight.x" value="46.0"/>
 					<property name="com.jaspersoft.layout.grid.weight.y" value="100.0"/>
 					<property name="com.jaspersoft.layout.grid.rowspan" value="3"/>
 					<property name="com.jaspersoft.layout.grid.colspan" value="1"/>
@@ -145,7 +145,7 @@
 				<hyperlinkReferenceExpression><![CDATA[$F{url}]]></hyperlinkReferenceExpression>
 			</image>
 			<textField isStretchWithOverflow="true" hyperlinkType="Reference" hyperlinkTarget="Blank">
-				<reportElement style="Style1" x="278" y="15" width="317" height="40" forecolor="#000000" uuid="069f958e-8628-4af2-ba3b-76354a91c13b">
+				<reportElement style="Style1" x="274" y="15" width="321" height="40" forecolor="#000000" uuid="069f958e-8628-4af2-ba3b-76354a91c13b">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="5e8f869b-c673-4fa5-9c5a-41288ee875bf"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.x" value="px"/>
@@ -153,7 +153,7 @@
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					<property name="com.jaspersoft.layout.grid.x" value="1"/>
 					<property name="com.jaspersoft.layout.grid.y" value="1"/>
-					<property name="com.jaspersoft.layout.grid.weight.x" value="55.0"/>
+					<property name="com.jaspersoft.layout.grid.weight.x" value="54.0"/>
 					<property name="com.jaspersoft.layout.grid.weight.y" value="21.0"/>
 					<property name="com.jaspersoft.layout.grid.rowspan" value="1"/>
 					<property name="com.jaspersoft.layout.grid.colspan" value="1"/>
@@ -167,11 +167,11 @@
 				<hyperlinkReferenceExpression><![CDATA[$F{url}]]></hyperlinkReferenceExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" hyperlinkType="Reference" hyperlinkTarget="Blank">
-				<reportElement x="278" y="55" width="317" height="75" uuid="83189e92-cccf-459f-a9e6-586995af7b38">
+				<reportElement x="274" y="55" width="321" height="75" uuid="83189e92-cccf-459f-a9e6-586995af7b38">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="af0838ae-9637-4249-adaf-9e9a71641a42"/>
 					<property name="com.jaspersoft.layout.grid.x" value="1"/>
 					<property name="com.jaspersoft.layout.grid.y" value="2"/>
-					<property name="com.jaspersoft.layout.grid.weight.x" value="55.0"/>
+					<property name="com.jaspersoft.layout.grid.weight.x" value="52.0"/>
 					<property name="com.jaspersoft.layout.grid.weight.y" value="40.0"/>
 					<property name="com.jaspersoft.layout.grid.rowspan" value="1"/>
 					<property name="com.jaspersoft.layout.grid.colspan" value="1"/>
@@ -187,11 +187,11 @@
 				<hyperlinkReferenceExpression><![CDATA[$F{url}]]></hyperlinkReferenceExpression>
 			</textField>
 			<textField hyperlinkType="Reference" hyperlinkTarget="Blank">
-				<reportElement x="278" y="130" width="317" height="30" uuid="f8bd4348-9f1b-4846-97ef-a9c717875723">
+				<reportElement x="274" y="130" width="321" height="30" uuid="f8bd4348-9f1b-4846-97ef-a9c717875723">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="8e9dc27a-9ac6-41d0-a5db-d0a76cf43659"/>
 					<property name="com.jaspersoft.layout.grid.x" value="1"/>
 					<property name="com.jaspersoft.layout.grid.y" value="3"/>
-					<property name="com.jaspersoft.layout.grid.weight.x" value="55.0"/>
+					<property name="com.jaspersoft.layout.grid.weight.x" value="52.0"/>
 					<property name="com.jaspersoft.layout.grid.weight.y" value="16.0"/>
 					<property name="com.jaspersoft.layout.grid.rowspan" value="1"/>
 					<property name="com.jaspersoft.layout.grid.colspan" value="1"/>
