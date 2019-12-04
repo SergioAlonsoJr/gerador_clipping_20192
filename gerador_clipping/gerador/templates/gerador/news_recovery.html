@@ -104,7 +104,7 @@
                 </div>
               </div>
             </div>
-
+            {% if news_result %}
             {% for news in news_result  %}
             <div class="clearfix"></div>
             <div class="row">
@@ -157,7 +157,9 @@
               </div>
             </div>
             {% endfor%}
-
+            {% else%}
+              A busca não retornou resultados
+            {% endif %}
             </div>
 
         <!-- /page content -->
