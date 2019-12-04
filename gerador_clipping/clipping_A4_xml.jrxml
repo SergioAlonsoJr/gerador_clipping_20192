@@ -111,7 +111,7 @@
 				<imageExpression><![CDATA["media/"+$F{image}]]></imageExpression>
 				<hyperlinkReferenceExpression><![CDATA[$F{url}]]></hyperlinkReferenceExpression>
 			</image>
-			<textField isBlankWhenNull="true" hyperlinkType="" hyperlinkTarget="">
+			<textField isBlankWhenNull="true" hyperlinkType="Reference" hyperlinkTarget="Blank">
 				<reportElement x="278" y="0" width="317" height="31" uuid="88ece599-3786-49aa-955a-17e640a691e8">
 					<property name="com.jaspersoft.layout.grid.x" value="1"/>
 					<property name="com.jaspersoft.layout.grid.y" value="0"/>
@@ -126,6 +126,7 @@
 					<font size="12" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{header}]]></textFieldExpression>
+				<hyperlinkReferenceExpression><![CDATA[$F{url}]]></hyperlinkReferenceExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" hyperlinkType="Reference" hyperlinkTarget="Blank">
 				<reportElement style="Style1" x="278" y="31" width="317" height="36" forecolor="#000000" uuid="069f958e-8628-4af2-ba3b-76354a91c13b">
