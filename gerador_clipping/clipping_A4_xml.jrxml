@@ -77,56 +77,58 @@
 		</band>
 	</background>
 	<title>
-		<band height="165" splitType="Stretch">
+		<band height="160" splitType="Stretch">
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
 			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
 			<image>
-				<reportElement x="0" y="0" width="595" height="165" uuid="990193b2-9dc6-4418-bf7a-fe86f0b5d120"/>
+				<reportElement x="0" y="0" width="595" height="160" uuid="990193b2-9dc6-4418-bf7a-fe86f0b5d120"/>
 				<imageExpression><![CDATA["media/header.png"]]></imageExpression>
 			</image>
 		</band>
 	</title>
+	<pageHeader>
+		<band height="15">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</band>
+	</pageHeader>
 	<detail>
-		<band height="165" splitType="Stretch">
+		<band height="160" splitType="Stretch">
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
 			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.grid.JSSGridBagLayout"/>
-			<image scaleImage="FillFrame" hAlign="Center" vAlign="Bottom">
-				<reportElement x="0" y="0" width="274" height="165" uuid="93f352a1-84d4-4ac7-a871-b840a9826b7e">
+			<image scaleImage="FillFrame" hAlign="Left" vAlign="Top" hyperlinkType="Reference" hyperlinkTarget="Blank">
+				<reportElement x="0" y="0" width="278" height="160" uuid="93f352a1-84d4-4ac7-a871-b840a9826b7e">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.y" value="px"/>
 					<property name="com.jaspersoft.layout.grid.x" value="0"/>
 					<property name="com.jaspersoft.layout.grid.y" value="0"/>
-					<property name="com.jaspersoft.layout.grid.weight.x" value="46.0"/>
+					<property name="com.jaspersoft.layout.grid.weight.x" value="48.0"/>
 					<property name="com.jaspersoft.layout.grid.weight.y" value="100.0"/>
 					<property name="com.jaspersoft.layout.grid.rowspan" value="4"/>
 					<property name="com.jaspersoft.layout.grid.colspan" value="1"/>
 					<property name="com.jaspersoft.layout.grid.weight.fixed" value="false"/>
 				</reportElement>
-				<box topPadding="10" leftPadding="20" bottomPadding="10" rightPadding="10"/>
+				<box topPadding="10" leftPadding="25" bottomPadding="12" rightPadding="12"/>
 				<imageExpression><![CDATA["media/"+$F{image}]]></imageExpression>
+				<hyperlinkReferenceExpression><![CDATA[$F{url}]]></hyperlinkReferenceExpression>
 			</image>
-			<textField isBlankWhenNull="true">
-				<reportElement x="274" y="0" width="321" height="25" forecolor="#000000" uuid="1c80599a-d17e-4f1d-a0f6-007c4e7197b8">
-					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+			<textField isBlankWhenNull="true" hyperlinkType="" hyperlinkTarget="">
+				<reportElement x="278" y="0" width="317" height="31" uuid="88ece599-3786-49aa-955a-17e640a691e8">
 					<property name="com.jaspersoft.layout.grid.x" value="1"/>
 					<property name="com.jaspersoft.layout.grid.y" value="0"/>
-					<property name="com.jaspersoft.layout.grid.weight.x" value="54.0"/>
-					<property name="com.jaspersoft.layout.grid.weight.y" value="15.0"/>
+					<property name="com.jaspersoft.layout.grid.weight.x" value="55.0"/>
+					<property name="com.jaspersoft.layout.grid.weight.y" value="18.0"/>
 					<property name="com.jaspersoft.layout.grid.rowspan" value="1"/>
 					<property name="com.jaspersoft.layout.grid.colspan" value="1"/>
 					<property name="com.jaspersoft.layout.grid.weight.fixed" value="false"/>
-					<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
-					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 				</reportElement>
-				<box topPadding="10" leftPadding="5" bottomPadding="2" rightPadding="20"/>
-				<textElement textAlignment="Left" verticalAlignment="Top" markup="rtf">
-					<font fontName="SansSerif" size="10" isBold="false"/>
-					<paragraph leftIndent="4" rightIndent="10"/>
+				<box topPadding="12" leftPadding="0" bottomPadding="2" rightPadding="25"/>
+				<textElement>
+					<font size="12" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{header}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement style="Style1" x="274" y="25" width="321" height="35" forecolor="#000000" uuid="069f958e-8628-4af2-ba3b-76354a91c13b">
+			<textField isStretchWithOverflow="true" hyperlinkType="Reference" hyperlinkTarget="Blank">
+				<reportElement style="Style1" x="278" y="31" width="317" height="36" forecolor="#000000" uuid="069f958e-8628-4af2-ba3b-76354a91c13b">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="5e8f869b-c673-4fa5-9c5a-41288ee875bf"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.x" value="px"/>
@@ -134,53 +136,56 @@
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					<property name="com.jaspersoft.layout.grid.x" value="1"/>
 					<property name="com.jaspersoft.layout.grid.y" value="1"/>
-					<property name="com.jaspersoft.layout.grid.weight.x" value="30.0"/>
+					<property name="com.jaspersoft.layout.grid.weight.x" value="55.0"/>
 					<property name="com.jaspersoft.layout.grid.weight.y" value="21.0"/>
 					<property name="com.jaspersoft.layout.grid.rowspan" value="1"/>
 					<property name="com.jaspersoft.layout.grid.colspan" value="1"/>
 					<property name="com.jaspersoft.layout.grid.weight.fixed" value="false"/>
 				</reportElement>
-				<box topPadding="2" leftPadding="5" bottomPadding="2" rightPadding="20"/>
+				<box topPadding="2" leftPadding="0" bottomPadding="2" rightPadding="25"/>
 				<textElement textAlignment="Left" verticalAlignment="Top">
-					<font fontName="SansSerif" size="12" isBold="true" isItalic="false" isUnderline="false"/>
+					<font fontName="SansSerif" size="11" isBold="true" isItalic="false" isUnderline="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{title}]]></textFieldExpression>
+				<hyperlinkReferenceExpression><![CDATA[$F{url}]]></hyperlinkReferenceExpression>
 			</textField>
-			<textField>
-				<reportElement x="274" y="60" width="321" height="81" uuid="83189e92-cccf-459f-a9e6-586995af7b38">
+			<textField isStretchWithOverflow="true" hyperlinkType="Reference" hyperlinkTarget="Blank">
+				<reportElement x="278" y="67" width="317" height="67" uuid="83189e92-cccf-459f-a9e6-586995af7b38">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="af0838ae-9637-4249-adaf-9e9a71641a42"/>
 					<property name="com.jaspersoft.layout.grid.x" value="1"/>
 					<property name="com.jaspersoft.layout.grid.y" value="2"/>
-					<property name="com.jaspersoft.layout.grid.weight.x" value="30.0"/>
-					<property name="com.jaspersoft.layout.grid.weight.y" value="50.0"/>
+					<property name="com.jaspersoft.layout.grid.weight.x" value="55.0"/>
+					<property name="com.jaspersoft.layout.grid.weight.y" value="40.0"/>
 					<property name="com.jaspersoft.layout.grid.rowspan" value="1"/>
 					<property name="com.jaspersoft.layout.grid.colspan" value="1"/>
 					<property name="com.jaspersoft.layout.grid.weight.fixed" value="false"/>
 					<property name="com.jaspersoft.studio.unit.rightIndent" value="px"/>
 				</reportElement>
-				<box topPadding="2" leftPadding="5" bottomPadding="2" rightPadding="20"/>
-				<textElement textAlignment="Justified">
+				<box topPadding="2" leftPadding="0" bottomPadding="2" rightPadding="25"/>
+				<textElement textAlignment="Justified" markup="styled">
 					<font size="10"/>
 					<paragraph rightIndent="0"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{content}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{content} + "<style isUnderline='true' forecolor='#0a65c2'>Ler mais...</style>"]]></textFieldExpression>
+				<hyperlinkReferenceExpression><![CDATA[$F{url}]]></hyperlinkReferenceExpression>
 			</textField>
-			<textField>
-				<reportElement x="274" y="141" width="321" height="24" uuid="f8bd4348-9f1b-4846-97ef-a9c717875723">
+			<textField hyperlinkType="Reference" hyperlinkTarget="Blank">
+				<reportElement x="278" y="134" width="317" height="26" uuid="f8bd4348-9f1b-4846-97ef-a9c717875723">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="8e9dc27a-9ac6-41d0-a5db-d0a76cf43659"/>
 					<property name="com.jaspersoft.layout.grid.x" value="1"/>
 					<property name="com.jaspersoft.layout.grid.y" value="3"/>
-					<property name="com.jaspersoft.layout.grid.weight.x" value="30.0"/>
-					<property name="com.jaspersoft.layout.grid.weight.y" value="15.0"/>
+					<property name="com.jaspersoft.layout.grid.weight.x" value="55.0"/>
+					<property name="com.jaspersoft.layout.grid.weight.y" value="16.0"/>
 					<property name="com.jaspersoft.layout.grid.rowspan" value="1"/>
 					<property name="com.jaspersoft.layout.grid.colspan" value="1"/>
 					<property name="com.jaspersoft.layout.grid.weight.fixed" value="false"/>
 				</reportElement>
-				<box topPadding="2" leftPadding="5" bottomPadding="10" rightPadding="20"/>
+				<box topPadding="2" leftPadding="0" bottomPadding="12" rightPadding="25"/>
 				<textElement textAlignment="Left" verticalAlignment="Bottom">
 					<font fontName="SansSerif" size="9"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{human_pub_date}+ " | "+ $F{author}]]></textFieldExpression>
+				<hyperlinkReferenceExpression><![CDATA[$F{url}]]></hyperlinkReferenceExpression>
 			</textField>
 		</band>
 	</detail>

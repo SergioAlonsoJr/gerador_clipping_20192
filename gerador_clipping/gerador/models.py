@@ -1,8 +1,13 @@
 #!-*- conding: utf8 -*-
 """" Os modelos dos dados do aplicativo. """
-from django.db import models\
 
-from django_resized import ResizedImageField
+from io import BytesIO
+
+from django.db import models
+from django.core.files.base import ContentFile
+from django.core.files.uploadedfile import InMemoryUploadedFile
+
+from PIL import Image
 
 
 class ClippingProject(models.Model):
@@ -38,11 +43,10 @@ class News(models.Model):
     class Meta:
         ordering = ["order"]
 
-    """ 
     def crop_image(self):
-        
-
-        img = Image.open(self.image.path)
+        """ Recorta imagem para 16:9"""
+        img = Image.open(self.image)
+        img = img.convert('RGB')
         # Size of the image in pixels (size of orginal image)
         # (This is not mandatory)
         width, height = img.size
@@ -52,18 +56,31 @@ class News(models.Model):
         bottom = height
         if width >= height * 16/9:
             # imagem muito horizontal, recorta esquerda e direita
-            new_width = int(height/(16/9))
-            left = int(new_width-width)/2
-            right = new_width-left
+            new_width = int(height*(16/9))
+            left = int((width-new_width)/2)
+            right = width-left
+
         else:
             # imagem muito vertical, recorta cima e baixo
-            new_height = int(width*(16/9))
-            top = int(new_height-height)/2
-            bottom = new_height-top
+            new_height = int(width/(16/9))
+            top = int((height-new_height)/2)
+            bottom = height-top
 
         cropped_image = img.crop(
             (left, top, right, bottom))
-        self.image.save(self.image.name, cropped_image)
 
+        buffer = BytesIO()
+        cropped_image.save(fp=buffer, format='JPEG')
+
+        pillow_image = ContentFile(buffer.getvalue())
+
+        self.image.save(self.image.name, InMemoryUploadedFile(
+            pillow_image,
+            None,
+            self.image.name,
+            'image/jpeg',
+            pillow_image.tell,
+            None
+        ))
+        self.url_to_image = self.image.url
         self.save()
-    """

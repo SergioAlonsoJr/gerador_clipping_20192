@@ -6,6 +6,7 @@ import zipfile
 import socket
 import requests
 
+
 from pdf2image import convert_from_path
 
 from pyreportjasper import JasperPy
@@ -120,7 +121,8 @@ def news_recovery(request, project_id):
 
         news_list = raw_data['data']
 
-        search_age = int(request.GET.get('age', 7))
+        search_age = int(request.GET.get('age', request.session.get('age', 7)))
+        request.session['age'] = search_age
 
         # Filtro por Idade
         for i in range(len(news_list) - 1, -1, -1):
@@ -142,7 +144,9 @@ def news_recovery(request, project_id):
             news_list[i]['age_minutes'] = date_difference.days * \
                 60*24 + date_difference.seconds/60
 
-        search_term_packed = request.GET.get('search_term', '')
+        search_term_packed = request.GET.get(
+            'search_term', request.session.get('search_term', ''))
+        request.session['search_term'] = search_term_packed
         search_terms = search_term_packed.split()
 
         # Filtro por search_term
@@ -161,7 +165,8 @@ def news_recovery(request, project_id):
                 del news_list[i]
 
         # Ordena por score ou published_at
-        sort = request.GET.get('sort', 'score')
+        sort = request.GET.get('sort', request.session.get('sort', 'score'))
+        request.session['sort'] = sort
 
         if sort == 'score':
             news_list = sorted(news_list, key=lambda k: k['score'])
@@ -200,6 +205,17 @@ def insert_news(request, project_id):
 
     title = request.POST.get('title')
     content = request.POST.get('content')
+
+    # Curar tamanho da string
+    paragraphs = content.split('\n')
+    curated_content = ''
+    while len(curated_content) < len(content)/2:
+        curated_content = paragraphs.pop(0)
+
+    curated_content = curated_content.rstrip() + ' '
+    for char in curated_content:
+        print(char)
+
     author = request.POST.get('author')
     url = request.POST.get('url')
     pub_date = request.POST.get('publishedAt')
@@ -210,7 +226,7 @@ def insert_news(request, project_id):
 
     created_news = News(project=project,
                         title=title,
-                        content=content,
+                        content=curated_content,
                         url=url,
                         pub_date=pub_date,
                         author=author,
@@ -241,6 +257,7 @@ def insert_news(request, project_id):
 
     created_news.image.save(file_name, files.File(temporary_file))
     created_news.save()
+    created_news.crop_image()
     return HttpResponseRedirect(reverse('gerador:news_recovery', args=[project_id]))
 
 
@@ -328,6 +345,8 @@ def update_image_news(request, project_id):
         news_selected.url_to_image = news_selected.image.url
 
         news_selected.save()
+
+        news_selected.crop_image()
 
     return redirect(request.META.get('HTTP_REFERER'))
 
