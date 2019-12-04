@@ -110,7 +110,7 @@
 					<printWhenExpression><![CDATA[($F{header}.equals("")) ? Boolean.FALSE : Boolean.TRUE]]></printWhenExpression>
 				</reportElement>
 				<box topPadding="2" leftPadding="20" bottomPadding="0" rightPadding="20"/>
-				<textField isBlankWhenNull="true" hyperlinkType="Reference" hyperlinkTarget="Blank">
+				<textField isBlankWhenNull="true" hyperlinkType="" hyperlinkTarget="">
 					<reportElement stretchType="ContainerBottom" mode="Transparent" x="0" y="0" width="555" height="13" forecolor="#767070" backcolor="#ECECEC" uuid="88ece599-3786-49aa-955a-17e640a691e8">
 						<property name="com.jaspersoft.layout.grid.x" value="0"/>
 						<property name="com.jaspersoft.layout.grid.y" value="0"/>
@@ -125,7 +125,6 @@
 						<font size="10" isBold="true"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{header}]]></textFieldExpression>
-					<hyperlinkReferenceExpression><![CDATA[$F{url}]]></hyperlinkReferenceExpression>
 				</textField>
 			</frame>
 			<image scaleImage="RetainShape" hAlign="Right" vAlign="Bottom" hyperlinkType="Reference" hyperlinkTarget="Blank">
@@ -236,14 +235,13 @@
 				<box topPadding="10" leftPadding="20" bottomPadding="10" rightPadding="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[Elaboração
-Isabela Karen Pereira Gonçalves
+
 Tradução
-Isabela Karen Pereira Gonçalves
+
 Equipe Editorial
-Joaquim Bastos
+
 Sala de Situação – Faculdade de Ciências da Saúde (UnB)
-Revisão
-Patrícia Paiva Pereira]]></text>
+Revisão]]></text>
 			</staticText>
 		</band>
 	</summary>

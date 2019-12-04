@@ -186,6 +186,16 @@ def news_recovery(request, project_id):
                 content = content.split('[+')[0]
                 news['content'] = content
 
+            # Curar tamanho da string
+            paragraphs = content.split('\n')
+            curated_content = ''
+            while len(curated_content) < len(content)/2:
+                curated_content = paragraphs.pop(0)
+
+            curated_content = curated_content.rstrip() + ' '
+
+            news['content'] = curated_content
+
         return render(request, 'gerador/news_recovery.html',
                       {'project': project, 'news_result': news_list,
                        'search_terms': search_term_packed,
@@ -206,16 +216,6 @@ def insert_news(request, project_id):
     title = request.POST.get('title')
     content = request.POST.get('content')
 
-    # Curar tamanho da string
-    paragraphs = content.split('\n')
-    curated_content = ''
-    while len(curated_content) < len(content)/2:
-        curated_content = paragraphs.pop(0)
-
-    curated_content = curated_content.rstrip() + ' '
-    for char in curated_content:
-        print(char)
-
     author = request.POST.get('author')
     url = request.POST.get('url')
     pub_date = request.POST.get('publishedAt')
@@ -226,7 +226,7 @@ def insert_news(request, project_id):
 
     created_news = News(project=project,
                         title=title,
-                        content=curated_content,
+                        content=content,
                         url=url,
                         pub_date=pub_date,
                         author=author,
