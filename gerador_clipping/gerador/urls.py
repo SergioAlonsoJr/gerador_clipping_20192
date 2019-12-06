@@ -35,6 +35,11 @@ urlpatterns = [
     path('<int:project_id>/download_jpeg/',
          views.download_jpeg, name='download_jpeg'),
 
+    path('<int:project_id>/show_organization_identity/',
+         views.show_organization_identity, name='show_organization_identity'),
+
+    path('<int:project_id>/update_organization_identity/',
+         views.update_organization_identity, name='update_organization_identity'),
     path('<int:project_id>/recovery/', views.news_recovery, name='news_recovery'),
     path('<int:project_id>/organizer/',
          views.clipping_organizer, name='organizer'),

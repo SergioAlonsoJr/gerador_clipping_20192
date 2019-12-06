@@ -1,0 +1,22 @@
+<h1> Créditos dos criadores do clipping</h1>
+
+<form action="{% url 'gerador:update_organization_identity' project.id %}" method="post">
+
+    {% csrf_token %}
+    <label for="clipping_creator">Créditos do final do clipping:</label>
+    <br>
+    <textarea name="clipping_creator" id="clipping_creator" rows="10" cols="50" required>{{identity.clipping_creator}}
+    </textarea>
+    <br>
+    <p>Este campo permite tags de HTML:</p>
+    <ul>
+        <li>&lt;b&gt; <b> Negrito </b>&lt;/b&gt;
+        <li>&lt;u&gt; <u> Underline </u>&lt;/u&gt;
+        <li>&lt;i&gt; <i> Itálico </i>&lt;/i&gt;
+        <li>Quebra de &lt;br&gt; <br>linha
+        
+    </ul>
+    <input type="submit" value="Salvar">
+
+
+</form>

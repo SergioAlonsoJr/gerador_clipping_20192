@@ -20,11 +20,15 @@ from django.utils import timezone
 from django.urls import reverse
 from django.views import generic
 
-from .models import ClippingProject, News
+from .models import ClippingProject, News, OrganizationIdentity
 
 
 class ExplorerView(generic.ListView):
     """" Permite gerenciar projetos de clipping. """
+
+    if OrganizationIdentity.objects.count() == 0:
+        new_organization_identity = OrganizationIdentity()
+        new_organization_identity.save()
 
     template_name = 'gerador/explorer.html'
     context_object_name = 'project_list'
@@ -212,7 +216,7 @@ def insert_news(request, project_id):
     """" Insere notícia no projeto. """
 
     project = ClippingProject.objects.get(id=project_id)
-
+    current_identity = OrganizationIdentity.objects.all()[0]
     title = request.POST.get('title')
     content = request.POST.get('content')
 
@@ -233,7 +237,8 @@ def insert_news(request, project_id):
                         url_to_image=url_to_image,
                         source_db_id=source_db_id,
                         order=order,
-                        human_pub_date=human_pub_date)
+                        human_pub_date=human_pub_date,
+                        clipping_creator=current_identity.clipping_creator)
 
     # Primeiro verifica se já temos uma imagem similar salva
     file_name = url_to_image[8:]
@@ -365,7 +370,8 @@ def download_pdf(request, project_id):
         xml_serializer = xmlserializer()
         xml_serializer.serialize(project.news_set.all(),
                                  fields=('title', 'content', 'url', 'pub_date',
-                                         'author', 'image', 'header', 'human_pub_date'),
+                                         'author', 'image', 'header', 'human_pub_date',
+                                         'clipping_creator'),
                                  stream=xml_file)
 
     input_file = os.path.abspath(os.path.join(
@@ -396,7 +402,7 @@ def download_pdf(request, project_id):
 
 
 def download_jpeg(request, project_id):
-    """ Faz download do clipping como jpeg. """
+    """ Faz download do clipping como jpeg. Incompleto """
 
     project = get_object_or_404(ClippingProject, pk=project_id)
 
@@ -446,3 +452,29 @@ def download_jpeg(request, project_id):
     zipf.close()
 
     return redirect(request.META.get('HTTP_REFERER'))
+
+
+def show_organization_identity(request, project_id):
+    """ Mostra a identidade da organização: os criadores de clipping """
+    current_identity = OrganizationIdentity.objects.all()[0]
+    project = get_object_or_404(ClippingProject, pk=project_id)
+    return render(request, 'gerador/organization_identity.html',
+                  {'project': project, 'identity': current_identity})
+
+
+def update_organization_identity(request, project_id):
+    """ Atualiza a identidade dos criadores de clipping """
+    current_identity = OrganizationIdentity.objects.all()[0]
+    current_identity.clipping_creator = request.POST.get('clipping_creator')
+    current_identity.save()
+    # Atualiza em todas as notícias do projeto atual
+
+    project = get_object_or_404(ClippingProject, pk=project_id)
+
+    news_set = project.news_set.all()
+    for news in news_set:
+        news.clipping_creator = current_identity.clipping_creator
+        news.save()
+
+    return render(request, 'gerador/clipping_organizer.html',
+                  {'project': project, 'news_set': news_set})

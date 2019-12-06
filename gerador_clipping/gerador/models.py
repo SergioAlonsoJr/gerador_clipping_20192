@@ -22,7 +22,7 @@ class ClippingProject(models.Model):
 
 
 class News(models.Model):
-    """" News é uma notícia do clipping. """
+    """" News é uma notícia do clipping. É serializada como XML para o Jaspersoft Studio"""
     project = models.ForeignKey(ClippingProject, on_delete=models.CASCADE)
     order = models.PositiveSmallIntegerField(default=0)
     title = models.CharField(max_length=500)
@@ -36,6 +36,8 @@ class News(models.Model):
         upload_to='gerador/jasper/images', blank=True, max_length=1000)
     source_db_id = models.CharField(max_length=500, default='0')
     header = models.CharField(max_length=500, default="")
+    clipping_creator = models.CharField(
+        max_length=2000, default="Elaborado por <br> Sala de Situação da FS/UnB")
 
     def __str__(self):
         return self.title
@@ -84,3 +86,9 @@ class News(models.Model):
         ))
         self.url_to_image = self.image.url
         self.save()
+
+
+class OrganizationIdentity(models.Model):
+    """ Representa a identidade da organização criadora dos clippings. """
+    clipping_creator = models.CharField(
+        max_length=2000, default='Sala de Situação da FS/UnB')

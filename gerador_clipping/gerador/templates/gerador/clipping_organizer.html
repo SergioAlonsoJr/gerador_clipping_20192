@@ -49,6 +49,7 @@
             <a href="{% url 'gerador:explorer' %}"><input type="button" class="btn btn-default" value="Voltar ao explorador de projetos"></a>
             
             <a href="{% url 'gerador:news_recovery' project.id %}"><input type="button" class="btn btn-default" value="Recuperar mais notícias"></a>
+            <a href="{% url 'gerador:show_organization_identity' project.id %}"><input type="button" class="btn btn-default" value="Atualizar Créditos"></a>
             <a href="{% url 'gerador:download_pdf' project.id %}"><input type="button" class="btn btn-primary" value="Gerar Clipping PDF"></a>
             <br>
 

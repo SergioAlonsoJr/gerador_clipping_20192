@@ -60,6 +60,11 @@
 			<![CDATA[field[@name="human_pub_date"]]]>
 		</property>
 	</field>
+	<field name="clipping_creator" class="java.lang.String">
+		<property name="net.sf.jasperreports.xpath.field.expression">
+			<![CDATA[field[@name="clipping_creator"]]]>
+		</property>
+	</field>
 	<background>
 		<band height="842" splitType="Stretch">
 			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
@@ -127,7 +132,7 @@
 					<textFieldExpression><![CDATA[$F{header}]]></textFieldExpression>
 				</textField>
 			</frame>
-			<image scaleImage="RetainShape" hAlign="Right" vAlign="Bottom" hyperlinkType="Reference" hyperlinkTarget="Blank">
+			<image scaleImage="RetainShape" hAlign="Right" vAlign="Bottom" hyperlinkType="Reference">
 				<reportElement x="0" y="15" width="274" height="145" uuid="93f352a1-84d4-4ac7-a871-b840a9826b7e">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.y" value="px"/>
@@ -143,7 +148,7 @@
 				<imageExpression><![CDATA["media/"+$F{image}]]></imageExpression>
 				<hyperlinkReferenceExpression><![CDATA[$F{url}]]></hyperlinkReferenceExpression>
 			</image>
-			<textField isStretchWithOverflow="true" hyperlinkType="Reference" hyperlinkTarget="Blank">
+			<textField isStretchWithOverflow="true" hyperlinkType="Reference">
 				<reportElement style="Style1" x="274" y="15" width="321" height="40" forecolor="#000000" uuid="069f958e-8628-4af2-ba3b-76354a91c13b">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="5e8f869b-c673-4fa5-9c5a-41288ee875bf"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -165,7 +170,7 @@
 				<textFieldExpression><![CDATA[$F{title}]]></textFieldExpression>
 				<hyperlinkReferenceExpression><![CDATA[$F{url}]]></hyperlinkReferenceExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" hyperlinkType="Reference" hyperlinkTarget="Blank">
+			<textField isStretchWithOverflow="true" hyperlinkType="Reference">
 				<reportElement x="274" y="55" width="321" height="75" uuid="83189e92-cccf-459f-a9e6-586995af7b38">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="af0838ae-9637-4249-adaf-9e9a71641a42"/>
 					<property name="com.jaspersoft.layout.grid.x" value="1"/>
@@ -185,7 +190,7 @@
 				<textFieldExpression><![CDATA[$F{content} + "<style isUnderline='true' forecolor='#0a65c2'>Ler mais...</style>"]]></textFieldExpression>
 				<hyperlinkReferenceExpression><![CDATA[$F{url}]]></hyperlinkReferenceExpression>
 			</textField>
-			<textField hyperlinkType="Reference" hyperlinkTarget="Blank">
+			<textField hyperlinkType="Reference">
 				<reportElement x="274" y="130" width="321" height="30" uuid="f8bd4348-9f1b-4846-97ef-a9c717875723">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="8e9dc27a-9ac6-41d0-a5db-d0a76cf43659"/>
 					<property name="com.jaspersoft.layout.grid.x" value="1"/>
@@ -222,27 +227,19 @@
 				<box topPadding="20" leftPadding="20" bottomPadding="20" rightPadding="20"/>
 				<imageExpression><![CDATA["media/logo_sit.png"]]></imageExpression>
 			</image>
-			<staticText>
-				<reportElement x="0" y="165" width="595" height="165" uuid="c45ae1a2-8303-43a8-8211-cfac3b041c7d">
+			<textField>
+				<reportElement x="0" y="165" width="595" height="165" uuid="d746d25b-0878-4022-998c-ffed633f3b3a">
 					<property name="com.jaspersoft.layout.grid.x" value="0"/>
-					<property name="com.jaspersoft.layout.grid.y" value="1"/>
+					<property name="com.jaspersoft.layout.grid.y" value="2"/>
 					<property name="com.jaspersoft.layout.grid.weight.x" value="1.0"/>
 					<property name="com.jaspersoft.layout.grid.weight.y" value="1.0"/>
 					<property name="com.jaspersoft.layout.grid.rowspan" value="1"/>
 					<property name="com.jaspersoft.layout.grid.colspan" value="1"/>
 					<property name="com.jaspersoft.layout.grid.weight.fixed" value="false"/>
 				</reportElement>
-				<box topPadding="10" leftPadding="20" bottomPadding="10" rightPadding="20"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<text><![CDATA[Elaboração
-
-Tradução
-
-Equipe Editorial
-
-Sala de Situação – Faculdade de Ciências da Saúde (UnB)
-Revisão]]></text>
-			</staticText>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="html"/>
+				<textFieldExpression><![CDATA[$F{clipping_creator}]]></textFieldExpression>
+			</textField>
 		</band>
 	</summary>
 </jasperReport>
