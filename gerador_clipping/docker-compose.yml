@@ -12,7 +12,7 @@ services:
       - POSTGRES_PASSWORD=1000Tei@s
     build: .
     image: sergioalonsojr/gerador_clipping
-    command:  bash -c "python manage.py makemigrations gerador && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+    command:  bash -c "python manage.py migrate --fake && python manage.py makemigrations gerador && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
     restart: always
     volumes:
       - .:/usr/src/app
