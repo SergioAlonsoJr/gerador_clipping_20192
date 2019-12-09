@@ -48,6 +48,7 @@ Para cuidar dessa parte é necessário dominar:
 # Coisas para melhorar no artefato em atualizações futuras
 
  - Interface mais dinâmica com [Vue](https://vuejs.org/) e [Axios](https://br.vuejs.org/v2/cookbook/using-axios-to-consume-apis.html); e multithreading com [Celery](http://docs.celeryproject.org/en/latest/django/first-steps-with-django.html)
+ - Clipping formato para a televisão do corredor da FS. Pode ser feito [convertendo um PDF em JPEG](https://stackoverflow.com/questions/46184239/extract-a-page-from-a-pdf-as-a-jpeg)
  - Opção do usuário atualizar título e corpo da notícia
  - Opção do usuário atualizar identidade visual substituindo o plano de fundo, e as logomarcas
  - Opção do usuário upar seu próprio template do JasperSoft Studio
