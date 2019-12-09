@@ -3,12 +3,13 @@ Gerador de Clippings da Disciplina Sistemas de Informação 2019.2
 
 # Como instalar projeto
 
-A aplicação vai estar no localhost:8000
-1. O banco de dados da [HealthNewsAPI](https://github.com/healthnewsapi/HealthNewsAPI) precisa estar executando.
+* A aplicação vai estar no localhost:8000
+* O banco de dados da [HealthNewsAPI](https://github.com/healthnewsapi/HealthNewsAPI) precisa estar executando.
 
 ## Imagem para desenvolvedor
 Esse caminho facilita modificar o código e ver a alteração em tempo real (hot reload)
-
+1. Clone ou Fork este repositório
+1. Esteja no mesmo diretório que o docker-compose.yml
 1. `docker-compose build  # use sudo para ter o privilégio`
 1. `docker-compose up`
 
