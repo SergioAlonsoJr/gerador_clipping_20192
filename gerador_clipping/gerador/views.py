@@ -26,9 +26,9 @@ from .models import ClippingProject, News, OrganizationIdentity
 class ExplorerView(generic.ListView):
     """" Permite gerenciar projetos de clipping. """
 
-    if OrganizationIdentity.objects.count() == 0:
+   """  if OrganizationIdentity.objects.count() == 0:
         new_organization_identity = OrganizationIdentity()
-        new_organization_identity.save()
+        new_organization_identity.save() """
 
     template_name = 'gerador/explorer.html'
     context_object_name = 'project_list'
@@ -215,7 +215,7 @@ def news_recovery(request, project_id):
 def insert_news(request, project_id):
     """" Insere notícia no projeto. """
 
-    project = ClippingProject.objects.get(id=project_id)
+    """ project = ClippingProject.objects.get(id=project_id)
     current_identity = OrganizationIdentity.objects.all()[0]
     title = request.POST.get('title')
     content = request.POST.get('content')
@@ -263,7 +263,7 @@ def insert_news(request, project_id):
     created_news.image.save(file_name, files.File(temporary_file))
     created_news.save()
     created_news.crop_image()
-    return HttpResponseRedirect(reverse('gerador:news_recovery', args=[project_id]))
+    return HttpResponseRedirect(reverse('gerador:news_recovery', args=[project_id])) """
 
 
 def remove_news(request, project_id):
@@ -456,15 +456,15 @@ def download_jpeg(request, project_id):
 
 def show_organization_identity(request, project_id):
     """ Mostra a identidade da organização: os criadores de clipping """
-    current_identity = OrganizationIdentity.objects.all()[0]
+    """ current_identity = OrganizationIdentity.objects.all()[0]
     project = get_object_or_404(ClippingProject, pk=project_id)
     return render(request, 'gerador/organization_identity.html',
-                  {'project': project, 'identity': current_identity})
+                  {'project': project, 'identity': current_identity}) """
 
 
 def update_organization_identity(request, project_id):
     """ Atualiza a identidade dos criadores de clipping """
-    current_identity = OrganizationIdentity.objects.all()[0]
+    """ current_identity = OrganizationIdentity.objects.all()[0]
     current_identity.clipping_creator = request.POST.get('clipping_creator')
     current_identity.save()
     # Atualiza em todas as notícias do projeto atual
@@ -477,4 +477,4 @@ def update_organization_identity(request, project_id):
         news.save()
 
     return render(request, 'gerador/clipping_organizer.html',
-                  {'project': project, 'news_set': news_set})
+                  {'project': project, 'news_set': news_set}) """
