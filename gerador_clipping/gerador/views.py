@@ -26,10 +26,6 @@ from .models import ClippingProject, News, OrganizationIdentity
 class ExplorerView(generic.ListView):
     """" Permite gerenciar projetos de clipping. """
 
-    if OrganizationIdentity.objects.count() == 0:
-        new_organization_identity = OrganizationIdentity()
-        new_organization_identity.save()
-
     template_name = 'gerador/explorer.html'
     context_object_name = 'project_list'
 
@@ -39,7 +35,11 @@ class ExplorerView(generic.ListView):
 
 
 def new_project(request):
-    """" Cria novo projeto e redireciona para tela de edição. """
+    """ Cria novo projeto e redireciona para tela de edição. """
+    if OrganizationIdentity.objects.count() == 0:
+        new_organization_identity = OrganizationIdentity()
+        new_organization_identity.save()
+
     name = request.POST.get('clipping_name', str(
         ClippingProject.objects.count()+1))
     created_date = timezone.now()
