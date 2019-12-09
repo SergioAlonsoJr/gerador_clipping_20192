@@ -26,7 +26,7 @@ from .models import ClippingProject, News, OrganizationIdentity
 class ExplorerView(generic.ListView):
     """" Permite gerenciar projetos de clipping. """
 
-   """  if OrganizationIdentity.objects.count() == 0:
+    """  if OrganizationIdentity.objects.count() == 0:
         new_organization_identity = OrganizationIdentity()
         new_organization_identity.save() """
 
