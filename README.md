@@ -41,7 +41,7 @@ Para cuidar dessa parte é necessário dominar:
  
  ## 3) Layout do Clipping
  
- É onde é montado o layout do clipping, que recebe das regras de nogício os dados por arquivos XML e produz o PDF.
+ É onde é montado o layout do clipping, que recebe das regras de nogócio os dados por arquivos XML e produz o PDF.
  Para cuidar dessa parte é necessário dominar:
   - [JasperSoft Studio](https://community.jaspersoft.com/system/files/restricted-docs/jaspersoft-studio-user-guide_7.pdf)
 
